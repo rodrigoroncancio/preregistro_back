@@ -8,11 +8,6 @@ class Staff(models.Model):
 
     def __str__(self):
         return "%s" % self.user.first_name + " " + self.user.last_name
- 
-
-
-
-
 
 class Department(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
@@ -52,7 +47,7 @@ class Village(models.Model):
     class Meta:
         db_table = 'Village'
         managed = False
-        
+
 class Acquisitionfarm(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
     name = models.CharField(max_length=100, db_column='Name')
@@ -60,7 +55,7 @@ class Acquisitionfarm(models.Model):
     class Meta:
         managed = False
         db_table = 'AcquisitionFarm'
-        
+
 class Civilstatus(models.Model):
     id = models.AutoField(primary_key=True, db_column='id')
     name = models.CharField(max_length=100, db_column='name')
@@ -84,7 +79,7 @@ class Education(models.Model):
     class Meta:
         managed = False
         db_table = 'Education'
-        
+
 class Familyrelationships(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
     titularid = models.IntegerField(null=True, db_column='TitularId')
@@ -137,7 +132,7 @@ class Subjectofspecialprotection(models.Model):
 
 
 class UserPNIS(models.Model):
-    id = models.AutoField(primary_key=True, db_column='Id')  
+    id = models.AutoField(primary_key=True, db_column='Id')
     name = models.CharField(max_length=255, null=True, blank=True, db_column='Name')
     lastname = models.CharField(max_length=255, null=True, blank=True, db_column='LastName')
     identificationtype = models.ForeignKey('IdentificationType', on_delete=models.SET_NULL, null=True, blank=True, db_column='IdentificationTypeId')
@@ -210,7 +205,7 @@ class UserPNIS(models.Model):
     # economicactivity = models.CharField(max_length=255, null=True, blank=True, db_column='EconomicActivity')
     # experienceproductionline = models.CharField(max_length=255, null=True, blank=True, db_column='ExperienceProductionLine')
     # yearsexperienceproductionline = models.IntegerField(null=True, blank=True, db_column='YearsExperienceProductionLine')
-    
+
     class Meta:
         db_table = 'Users'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
