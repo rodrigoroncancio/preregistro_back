@@ -2,13 +2,77 @@ from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village
+from pnis.mixins.baseFile import BaseFileMixin
+from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister
 
 
 class UserPNISSerializer(serializers.ModelSerializer):
+    number_completed = serializers.SerializerMethodField()
+    number_uncompleted = serializers.SerializerMethodField()
+
     class Meta:
         model = UserPNIS
         fields = '__all__'
+
+    def get_number_completed(self, obj):
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.identificationnumber, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.identificationnumber, 0)
+        return f"{uncompleted}/10"
+
+    
+class ArgeliaGruposSerializer(serializers.ModelSerializer):
+    number_completed = serializers.SerializerMethodField()
+    number_uncompleted = serializers.SerializerMethodField()
+    class Meta:
+        model = ArgeliaGrupos
+        fields = '__all__'
+        
+    def get_number_completed(self, obj):
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.cedularepresentante, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
+        return f"{uncompleted}/10"
+        
+class ArgeliaPersonasSerializer(serializers.ModelSerializer):
+    number_completed = serializers.SerializerMethodField()
+    number_uncompleted = serializers.SerializerMethodField()
+    class Meta:
+        model = ArgeliaPersonas
+        fields = '__all__'
+        
+    def get_number_completed(self, obj):
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.identificacion, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.identificacion, 0)
+        return f"{uncompleted}/10"
+
+
+class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
+    # attachment = BaseFileMixin.url_file('attachment')
+    class Meta:
+        model = ValidationRegister
+        fields = '__all__'
+        
+        
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
