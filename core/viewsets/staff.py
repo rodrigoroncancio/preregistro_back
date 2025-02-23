@@ -5,24 +5,107 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAdminUser
 from django.contrib.auth import get_user_model
+from django.db.models import Count
+from rest_framework import status
 
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village
-from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
+from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
+from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer
 
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_superuser)
     
-class UserPnisViewSet (viewsets.ModelViewSet):
-
+class UserPnisViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = UserPNISSerializer
     queryset = UserPNIS.objects.all()
 
-    def list(self, request):
-        """ Devuelve la lista completa de usuarios PNIS """
-        user_pnis_list = UserPNIS.objects.all().values()
-        return Response(list(user_pnis_list))
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        
+        # Obtener el parámetro desde la URL
+        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+
+        # Filtrar por SurveyForms solo si se proporciona el formid
+        if formid:
+            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
+        else:
+            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+
+        # Convertir el resultado en un diccionario para acceso rápido
+        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+
+        context['validated_counts'] = validated_dict
+        return context
+    
+class ArgeliaGruposViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = ArgeliaGruposSerializer
+    queryset = ArgeliaGrupos.objects.all()
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        
+        # Obtener el parámetro desde la URL
+        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+
+        # Filtrar por SurveyForms solo si se proporciona el formid
+        if formid:
+            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
+        else:
+            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+
+        # Convertir el resultado en un diccionario para acceso rápido
+        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+
+        context['validated_counts'] = validated_dict
+        return context
+    
+class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = ArgeliaPersonasSerializer
+    queryset = ArgeliaPersonas.objects.all()   
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        
+        # Obtener el parámetro desde la URL
+        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+
+        # Filtrar por SurveyForms solo si se proporciona el formid
+        if formid:
+            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
+        else:
+            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+
+        # Convertir el resultado en un diccionario para acceso rápido
+        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+
+        context['validated_counts'] = validated_dict
+        return context
+    
+class ValidationRegisterViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = ValidationRegisterSerializer
+    queryset = ValidationRegister.objects.all()   
+    
+    @action(detail=False, methods=['get'], url_path='missing-validation-items/<str:document_number>/<int:survey_id>/')
+    def missing_validation_items(self, request, document_number, survey_id):
+        # Obtener los ValidationItems registrados en ValidationRegister con ese document_number y survey_id
+        registered_items = ValidationRegister.objects.filter(
+            document_number=document_number, 
+            SurveyForms_id=survey_id
+        ).values_list('validationitems_id', flat=True)
+
+        # Obtener los ValidationItems que no están registrados
+        missing_items = ValidationItems.objects.exclude(id__in=registered_items)
+
+        # Serializar los resultados
+        return Response({"missing_items": list(missing_items.values())})
+    
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
