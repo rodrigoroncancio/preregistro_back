@@ -8,51 +8,62 @@ from core.models import Staff, UserPNIS, Department, Municipality, Township, Vil
 
 class UserPNISSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
-    
+    number_uncompleted = serializers.SerializerMethodField()
+
     class Meta:
         model = UserPNIS
         fields = '__all__'
 
     def get_number_completed(self, obj):
-        # Obtiene el diccionario de conteo preprocesado del contexto
-        validated_counts = self.context.get('validated_counts', {})
-        
-        # Busca el número de validaciones para el documento del usuario
-        validated = validated_counts.get(obj.identificationnumber, 0)
-        
-        return f"{validated}/10"
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.identificationnumber, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.identificationnumber, 0)
+        return f"{uncompleted}/10"
 
     
 class ArgeliaGruposSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
+    number_uncompleted = serializers.SerializerMethodField()
     class Meta:
         model = ArgeliaGrupos
         fields = '__all__'
         
     def get_number_completed(self, obj):
-        # Obtiene el diccionario de conteo preprocesado del contexto
-        validated_counts = self.context.get('validated_counts', {})
-        
-        # Busca el número de validaciones para el documento del usuario
-        validated = validated_counts.get(obj.cedularepresentante, 0)
-        
-        return f"{validated}/10"
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.cedularepresentante, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
+        return f"{uncompleted}/10"
         
 class ArgeliaPersonasSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
-    
+    number_uncompleted = serializers.SerializerMethodField()
     class Meta:
         model = ArgeliaPersonas
         fields = '__all__'
         
     def get_number_completed(self, obj):
-        # Obtiene el diccionario de conteo preprocesado del contexto
-        validated_counts = self.context.get('validated_counts', {})
-        
-        # Busca el número de validaciones para el documento del usuario
-        validated = validated_counts.get(obj.identificacion, 0)
-        
-        return f"{validated}/10"
+        # Obtiene el diccionario de conteo de registros completados
+        completed_counts = self.context.get('validated_counts_completed', {})
+        completed = completed_counts.get(obj.identificacion, 0)
+        return f"{completed}/10"
+
+    def get_number_uncompleted(self, obj):
+        # Obtiene el diccionario de conteo de registros incompletos
+        uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
+        uncompleted = uncompleted_counts.get(obj.identificacion, 0)
+        return f"{uncompleted}/10"
 
 
 class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
