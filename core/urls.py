@@ -3,6 +3,7 @@ from django.urls import path
 
 from .viewsets.staff import StaffViewSet,  UserPnisViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .apiview.user import UserAPIView
+from .viewsets.archivo import ArchivoViewSet
 
 router = routers.SimpleRouter()
 router.register(r'staff', StaffViewSet, basename='staff')
@@ -20,5 +21,5 @@ urlpatterns = router.urls + [
     path('townships/by-municipality/<int:municipality_id>/', TownshipViewSet.as_view({'get': 'list'}), name='townships-by-municipality'),
     path('villages/by-township/<int:township_id>/', VillageViewSet.as_view({'get': 'list'}), name='villages-by-township'),
     
-    # path('user-pnis/data/<int:pnis_id>/', UserPnisAPIView.as_view(), name='user-pnis-detail'),  # Registro específico
+    path('media/test/', ArchivoViewSet.as_view({'get': 'descargar'}), name='user-pnis-detail'),  # Registro específico
 ]

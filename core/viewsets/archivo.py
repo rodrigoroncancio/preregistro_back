@@ -14,6 +14,7 @@ import hashlib, os
 class ArchivoViewSet(viewsets.GenericViewSet):
     parser_classes = (MultiPartParser, FormParser)
     # permission_classes = [StaffPermission]
+    permission_classes = []
 
     def ruta_archivo(self, entrega_id, filename):
         subcarpeta = "a" + str(entrega_id)
@@ -53,24 +54,9 @@ class ArchivoViewSet(viewsets.GenericViewSet):
             return Response({"error": "Debe incluir el id de acuerdo"}, status=status.HTTP_400_BAD_REQUEST)
         
     def descargar(self, request, *args, **kwargs):
-        if kwargs["tipo"] not in ("prueba", "acuerdo", "legalizacion"):
-            return Response({"error": "Tipo no encontrado"}, status=status.HTTP_400_BAD_REQUEST)
-        acuerdo = int(kwargs["acuerdo"])
-        if acuerdo > 0 :
-            instance = Acuerdo.objects.filter(id=acuerdo).first()
-            if instance is None:
-                return Response({"error": "Acuerdo no encontrado"}, status=status.HTTP_400_BAD_REQUEST)            
-            if "acuerdo" == kwargs["tipo"]:
-                contenido = descargar_archivo(instance.ruta_acuerdo)
-            elif "legalizacion" == kwargs["tipo"]:
-                contenido = descargar_archivo(instance.ruta_legalizacion)
-            else:
-                # pass
-                contenido = descargar_archivo(instance.ruta_acuerdo)
-            if contenido is None:
-                return Response({"error": "No se pudo descargar el archivo o no existe"}, status=status.HTTP_400_BAD_REQUEST)
-            response = HttpResponse(contenido, content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename={kwargs["tipo"]}_{instance.id}.pdf'
-            return response
-        else :
-            return Response({"error": "Debe incluir el id de acuerdo"}, status=status.HTTP_400_BAD_REQUEST)
+        contenido = descargar_archivo("1000046724-13_20_4.jpg")
+        if contenido is None:
+            return Response({"error": "No se pudo descargar el archivo o no existe"}, status=status.HTTP_400_BAD_REQUEST)
+        response = HttpResponse(contenido, content_type='application/image')
+        response['Content-Disposition'] = f'attachment; filename=dd.jpg'
+        return response
