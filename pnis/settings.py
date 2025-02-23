@@ -223,6 +223,7 @@ DJOSER = {
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3333',
+    'http://localhost:3000',
 ]
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
