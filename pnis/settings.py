@@ -112,19 +112,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get("DB_NAME", "db_name"),
-#         'USER': os.environ.get("DB_USER", "postgres"),
-#         'PASSWORD': os.environ.get("DB_PASSWORD", "12345"),
-#         'HOST': os.environ.get("DB_HOST", "localhost"),
-#         'PORT': os.environ.get("DB_PORT", "5432"),
-#     }
-# }
-
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -167,6 +155,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Azure blob
+AZURE_TENANT_ID = os.environ.get("AZURE_TENANT")
+AZURE_CLIENT_ID = os.environ.get("AZURE_CLIENT")
+AZURE_CLIENT_SECRET = os.environ.get("AZURE_CLIENT_SECRET")
+AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT")
+AZURE_CONTAINER_NAME = os.environ.get("AZURE_CONTAINER")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
