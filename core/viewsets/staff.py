@@ -24,18 +24,36 @@ class UserPnisViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+        formid = self.kwargs.get('formid')  
 
-        # Filtrar por SurveyForms solo si se proporciona el formid
+        # Construir las consultas filtradas
+        filter_params = Q()
         if formid:
-            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
-        else:
-            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+            filter_params &= Q(SurveyForms_id=formid)
 
-        # Convertir el resultado en un diccionario para acceso rápido
-        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+        # Filtrar los registros con status = 1 (completados)
+        completed_query = (
+            ValidationRegister.objects
+            .filter(filter_params & Q(status="si"))
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
 
-        context['validated_counts'] = validated_dict
+        # Filtrar los registros con status ≠ 1 (incompletos)
+        uncompleted_query = (
+            ValidationRegister.objects
+            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
+
+        # Convertir a diccionarios para acceso rápido
+        completed_dict = {entry['document_number']: entry['count'] for entry in completed_query}
+        uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
+
+        # Agregar al contexto
+        context['validated_counts_completed'] = completed_dict
+        context['validated_counts_uncompleted'] = uncompleted_dict
         return context
     
 class ArgeliaGruposViewSet (viewsets.ModelViewSet):
@@ -48,18 +66,36 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
         context = super().get_serializer_context()
         
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+        formid = self.kwargs.get('formid')  
 
-        # Filtrar por SurveyForms solo si se proporciona el formid
+        # Construir las consultas filtradas
+        filter_params = Q()
         if formid:
-            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
-        else:
-            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+            filter_params &= Q(SurveyForms_id=formid)
 
-        # Convertir el resultado en un diccionario para acceso rápido
-        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+        # Filtrar los registros con status = 1 (completados)
+        completed_query = (
+            ValidationRegister.objects
+            .filter(filter_params & Q(status="si"))
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
 
-        context['validated_counts'] = validated_dict
+        # Filtrar los registros con status ≠ 1 (incompletos)
+        uncompleted_query = (
+            ValidationRegister.objects
+            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
+
+        # Convertir a diccionarios para acceso rápido
+        completed_dict = {entry['document_number']: entry['count'] for entry in completed_query}
+        uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
+
+        # Agregar al contexto
+        context['validated_counts_completed'] = completed_dict
+        context['validated_counts_uncompleted'] = uncompleted_dict
         return context
     
 class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
@@ -72,18 +108,36 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         context = super().get_serializer_context()
         
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  # Mejor forma de obtenerlo en ViewSets
+        formid = self.kwargs.get('formid')  
 
-        # Filtrar por SurveyForms solo si se proporciona el formid
+        # Construir las consultas filtradas
+        filter_params = Q()
         if formid:
-            validated_counts_query = ValidationRegister.objects.filter(SurveyForms_id=formid).values('document_number').annotate(count=Count('id'))
-        else:
-            validated_counts_query = ValidationRegister.objects.values('document_number').annotate(count=Count('id'))
+            filter_params &= Q(SurveyForms_id=formid)
 
-        # Convertir el resultado en un diccionario para acceso rápido
-        validated_dict = {entry['document_number']: entry['count'] for entry in validated_counts_query}
+        # Filtrar los registros con status = 1 (completados)
+        completed_query = (
+            ValidationRegister.objects
+            .filter(filter_params & Q(status="si"))
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
 
-        context['validated_counts'] = validated_dict
+        # Filtrar los registros con status ≠ 1 (incompletos)
+        uncompleted_query = (
+            ValidationRegister.objects
+            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
+            .values('document_number')
+            .annotate(count=Count('id'))
+        )
+
+        # Convertir a diccionarios para acceso rápido
+        completed_dict = {entry['document_number']: entry['count'] for entry in completed_query}
+        uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
+
+        # Agregar al contexto
+        context['validated_counts_completed'] = completed_dict
+        context['validated_counts_uncompleted'] = uncompleted_dict
         return context
     
 class ValidationRegisterViewSet (viewsets.ModelViewSet):
