@@ -45,6 +45,7 @@ class ArgeliaGruposSerializer(serializers.ModelSerializer):
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
         return f"{uncompleted}/10"
+    
         
 class ArgeliaPersonasSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
@@ -67,11 +68,10 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
 
 
 class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
-    # attachment = BaseFileMixin.url_file('attachment')
+    attachment = BaseFileMixin.base64_file()
     class Meta:
         model = ValidationRegister
         fields = '__all__'
-        
         
 
 class DepartmentSerializer(serializers.ModelSerializer):

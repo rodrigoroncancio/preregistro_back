@@ -20,6 +20,7 @@ urlpatterns = router.urls + [
     path('municipalities/by-department/<int:department_id>/', MunicipalityViewSet.as_view({'get': 'list'}), name='municipalities-by-department'),
     path('townships/by-municipality/<int:municipality_id>/', TownshipViewSet.as_view({'get': 'list'}), name='townships-by-municipality'),
     path('villages/by-township/<int:township_id>/', VillageViewSet.as_view({'get': 'list'}), name='villages-by-township'),
+    
     path('userpnis/filterbysurvey/<int:formid>/', UserPnisViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('argeliagrupos/filterbysurvey/<int:formid>/', ArgeliaGruposViewSet.as_view({'get': 'list'}), name='argeliagrupos-filterbysurvey'),
     path('argeliapersonas/filterbysurvey/<int:formid>/', ArgeliaPersonasViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
