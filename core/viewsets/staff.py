@@ -21,6 +21,11 @@ class UserPnisViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = UserPNISSerializer
     queryset = UserPNIS.objects.all()
+    filter_backends = [ORFilterBackend]
+    search_fields = ['identificationnumber',
+        'name',
+        'lastname'
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -112,6 +117,11 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = ArgeliaPersonasSerializer
     queryset = ArgeliaPersonas.objects.all()
+    filter_backends = [ORFilterBackend]
+    search_fields = ['identificacion',
+        'nombres',
+        'apellidos'
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
