@@ -15,4 +15,4 @@ RUN pip install --upgrade pip && \
 COPY . /code/
 
 EXPOSE 8000
-CMD ["gunicorn", "-b", "0.0.0.0", "-w", "4", "ord_compras.wsgi:application"]
+CMD ["gunicorn", "-b", "0.0.0.0", "-w", "4", "pnis.wsgi:application"]
