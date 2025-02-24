@@ -11,10 +11,12 @@ from rest_framework import status
 from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
 from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer
 
+from pnis.filters import ORFilterBackend
+
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_superuser)
-    
+
 class UserPnisViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = UserPNISSerializer
@@ -22,9 +24,9 @@ class UserPnisViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        
+
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  
+        formid = self.kwargs.get('formid')
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -55,18 +57,25 @@ class UserPnisViewSet(viewsets.ModelViewSet):
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
-    
+
 class ArgeliaGruposViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = ArgeliaGruposSerializer
     queryset = ArgeliaGrupos.objects.all()
-    
+    filter_backends = [ORFilterBackend]
+    search_fields = ['identificacionorganizacion',
+        'cedularepresentante',
+        'grupoproductores',
+        'departamentoinfluencia',
+        'municipioinfluencia'
+    ]
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        
+
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  
+        formid = self.kwargs.get('formid')
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -97,18 +106,18 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
-    
+
 class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = ArgeliaPersonasSerializer
-    queryset = ArgeliaPersonas.objects.all()   
-    
+    queryset = ArgeliaPersonas.objects.all()
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        
+
         # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')  
+        formid = self.kwargs.get('formid')
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -139,18 +148,18 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
-    
+
 class ValidationRegisterViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = ValidationRegisterSerializer
-    queryset = ValidationRegister.objects.all()   
-    
+    queryset = ValidationRegister.objects.all()
+
     @action(detail=False, methods=['get'], url_path='missing-validation-items/<str:document_number>/<int:survey_id>/')
     def missing_validation_items(self, request, document_number, survey_id):
         # Obtener los ValidationItems registrados en ValidationRegister con ese document_number y survey_id
         registered_items = ValidationRegister.objects.filter(
-            document_number=document_number, 
+            document_number=document_number,
             SurveyForms_id=survey_id
         ).values_list('validationitems_id', flat=True)
 
@@ -159,7 +168,7 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
 
         # Serializar los resultados
         return Response({"missing_items": list(missing_items.values())})
-    
+
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
@@ -172,7 +181,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         return Response(list(departments_list))
 
 class MunicipalityViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser] 
+    permission_classes = [IsAdminUser]
     serializer_class = MunicipalitySerializer
     queryset = Municipality.objects.all()
 
@@ -184,7 +193,7 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
             municipalities_list = Municipality.objects.filter(departmentid=department_id).values()
         else:
             municipalities_list = Municipality.objects.all().values()
-            
+
         return Response(list(municipalities_list))
 
 class TownshipViewSet(viewsets.ModelViewSet):
@@ -195,7 +204,7 @@ class TownshipViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         """ Devuelve la lista de corregimientos filtrados por municipio si se proporciona municipality_id """
         municipality_id = kwargs.get('municipality_id')  # Capturar el ID desde la URL
-        
+
         if municipality_id:
             townships_list = Township.objects.filter(municipalityid=municipality_id).values()
         else:
@@ -221,6 +230,9 @@ class StaffViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = StaffSerializer
+    filter_backends = [ORFilterBackend]
+    search_fields = ['first_name', 'last_name']
+
 
     def get_queryset(self):
         user = self.request.user

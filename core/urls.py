@@ -10,12 +10,10 @@ router.register(r'userpnis', UserPnisViewSet, basename='userpnis')
 router.register(r'argeliagrupos', ArgeliaGruposViewSet, basename='argeliagrupos')
 router.register(r'argeliapersonas', ArgeliaPersonasViewSet, basename='argeliapersonas')
 router.register(r'departments', DepartmentViewSet, basename='departments')
-router.register(r'municipalities', MunicipalityViewSet, basename='municipalities') 
+router.register(r'municipalities', MunicipalityViewSet, basename='municipalities')
 router.register(r'townships', TownshipViewSet, basename='townships')
 router.register(r'villages', VillageViewSet, basename='villages')
 router.register(r'validationregister', ValidationRegisterViewSet, basename='validationregister')
-
-
 
 urlpatterns = router.urls + [
     path('user/data/', UserAPIView.as_view(), name='get-user-data'),
