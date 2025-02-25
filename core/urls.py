@@ -1,7 +1,7 @@
 from rest_framework import routers
 from django.urls import path
 
-from .viewsets.archivo import ArchivoViewSet
+from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
 from .viewsets.staff import StaffViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet, ValidationRegisterViewSet
 from .apiview.user import UserAPIView
 
@@ -22,7 +22,8 @@ urlpatterns = router.urls + [
     path('townships/by-municipality/<int:municipality_id>/', TownshipViewSet.as_view({'get': 'list'}), name='townships-by-municipality'),
     path('villages/by-township/<int:township_id>/', VillageViewSet.as_view({'get': 'list'}), name='villages-by-township'),
     
-    path('media/<str:key>/', ArchivoViewSet.as_view({'get': 'descargar'}), name='media-descargar'),
+    path('media/generatekey/', ArchivoKeyViewSet.as_view({'get': 'generar'}), name='media-generar'),
+    path('media/<str:key>/<int:uid>/', ArchivoViewSet.as_view({'get': 'descargar'}), name='media-descargar'),
     path('userpnis/filterbysurvey/<int:formid>/', UserPnisViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('argeliagrupos/filterbysurvey/<int:formid>/', ArgeliaGruposViewSet.as_view({'get': 'list'}), name='argeliagrupos-filterbysurvey'),
     path('argeliapersonas/filterbysurvey/<int:formid>/', ArgeliaPersonasViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
