@@ -29,7 +29,8 @@ class SurveyForms_Privileges(models.Model):
 class ValidationItems(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField( null=True, blank=True)
-    survey = models.TextField( null=True, blank=True) 
+    survey = models.TextField( null=True, blank=True)
+    activated = models.BooleanField (default=True) 
 
 class ValidationRegister(models.Model):
     SurveyForms = models.ForeignKey(SurveyForms, on_delete=models.CASCADE, null=True, blank=True)

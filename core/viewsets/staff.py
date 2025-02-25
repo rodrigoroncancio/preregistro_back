@@ -174,7 +174,7 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
         ).values_list('validationitems_id', flat=True)
 
         # Obtener los ValidationItems que no están registrados
-        missing_items = ValidationItems.objects.exclude(id__in=registered_items)
+        missing_items = ValidationItems.objects.filter(activated = True).exclude(id__in=registered_items)
 
         # Serializar los resultados
         return Response({"missing_items": list(missing_items.values())})
