@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from core.azure import descargar_archivo
 import hashlib
 import filetype
+import os
 
 class ArchivoKeyViewSet(viewsets.GenericViewSet):
  
@@ -38,6 +39,9 @@ class ArchivoViewSet(viewsets.GenericViewSet):
 
         ruta = request.GET.get('ruta','')
         if ruta:
+            ruta_sin_extension, extension = os.path.splitext(ruta)
+            if extension.lower() in [".heif", ".heic"]:
+                ruta = ruta_sin_extension + ".jpg"
             contenido = descargar_archivo(ruta)
             if contenido is None:
                 return Response({"error": "No se pudo descargar el archivo o no existe"}, status=status.HTTP_404_NOT_FOUND)
