@@ -273,3 +273,4 @@ docker-compose.yml
 docker-compose.override.yml
 apienv/
 public/migrations/*
+core/migrations/*

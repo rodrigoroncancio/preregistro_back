@@ -3,6 +3,9 @@ import uuid
 import base64
 from rest_framework import serializers
 from core.azure import upload_file
+from pillow_heif import register_heif_opener
+from PIL import Image
+from io import BytesIO
 
 class BaseFileMixin:
     @staticmethod
@@ -22,17 +25,21 @@ class BaseFileMixin:
         try:
             format_info, file_str = base64_data.split(';base64,')
             file_ext = format_info.split('/')[-1]
+            contenido = base64.b64decode(file_str)
+            if file_ext == 'heif':
+                register_heif_opener()
+                # Crear un objeto BytesIO para manejar los datos de la imagen
+                image_stream = BytesIO(contenido)
+                image = Image.open(image_stream)
+                output_stream = BytesIO()
+                # Guardar la imagen en formato JPG
+                image.save(output_stream, format="JPEG", quality=80)
+                contenido = output_stream.getvalue()
+                file_ext = "jpg"
 
-            filename = f"{uuid.uuid4()}.{file_ext}"
-            # directory = os.path.join("media", "uploads")
-            # file_path = os.path.join(directory, filename)
-
-            # os.makedirs(directory, exist_ok=True)
-            # with open(file_path, "wb") as f:
-            #     f.write(base64.b64decode(file_str))
-
+            filename = f"{uuid.uuid4()}.{file_ext}" 
             file_path = f'{folder}/{filename}'  # Aquí se guarda el archivo en la carpeta
-            respuesta = upload_file(base64.b64decode(file_str), file_path)
+            respuesta = upload_file(contenido, file_path)
             if respuesta == "":
                 return None
 

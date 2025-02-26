@@ -18,13 +18,13 @@ class UserPNISSerializer(serializers.ModelSerializer):
         # Obtiene el diccionario de conteo de registros completados
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.identificationnumber, 0)
-        return f"{completed}/10"
+        return f"{completed}/7"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificationnumber, 0)
-        return f"{uncompleted}/10"
+        return f"{uncompleted}/7"
 
     
 class ArgeliaGruposSerializer(serializers.ModelSerializer):
@@ -38,13 +38,13 @@ class ArgeliaGruposSerializer(serializers.ModelSerializer):
         # Obtiene el diccionario de conteo de registros completados
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.cedularepresentante, 0)
-        return f"{completed}/10"
+        return f"{completed}/7"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
-        return f"{uncompleted}/10"
+        return f"{uncompleted}/7"
     
         
 class ArgeliaPersonasSerializer(serializers.ModelSerializer):
@@ -58,21 +58,37 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
         # Obtiene el diccionario de conteo de registros completados
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.identificacion, 0)
-        return f"{completed}/10"
+        return f"{completed}/7"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificacion, 0)
-        return f"{uncompleted}/10"
+        return f"{uncompleted}/7"
 
 
 class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
     attachment = BaseFileMixin.base64_file()
+    user_name = serializers.SerializerMethodField()
     class Meta:
         model = ValidationRegister
         fields = '__all__'
+            
+    def create(self, validated_data):
+        validated_data['user_id'] = self.context['request'].user.id
+        return super().create(validated_data)    
         
+    def get_user_name(self, obj):
+        return obj.user.first_name + ' ' + obj.user.last_name
+    
+class ValidationRegisterLiteSerializer(serializers.ModelSerializer): 
+    user_name = serializers.SerializerMethodField()
+    class Meta:
+        model = ValidationRegister
+        fields = ['id', 'user_name', 'status', 'observation', 'attachment', 'validationitems_id']
+        
+    def get_user_name(self, obj):
+        return obj.user.first_name + ' ' + obj.user.last_name
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:

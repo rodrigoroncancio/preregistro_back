@@ -9,7 +9,7 @@ from django.db.models import Count
 from rest_framework import status
 
 from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer
+from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer
 
 from pnis.filters import ORFilterBackend
 
@@ -174,11 +174,22 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
         ).values_list('validationitems_id', flat=True)
 
         # Obtener los ValidationItems que no están registrados
-        missing_items = ValidationItems.objects.exclude(id__in=registered_items).filter(activated=True)
+        missing_items = ValidationItems.objects.filter(activated = True).exclude(id__in=registered_items)
 
         # Serializar los resultados
         return Response({"missing_items": list(missing_items.values())})
 
+    @action(detail=False, methods=['get'], url_path='filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>/')
+    def filterbydocumentnumber(self, request, document_number, survey_id, status):
+        registered_items = ValidationRegister.objects.filter(
+            document_number=document_number,
+            SurveyForms_id=survey_id,
+            status=status
+        )
+
+        # Usar el serializer ligero
+        serializer = ValidationRegisterLiteSerializer(registered_items, many=True)
+        return Response(serializer.data)
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
