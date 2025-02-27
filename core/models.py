@@ -48,6 +48,20 @@ class ValidationRegister_Logs(models.Model):
     observation = models.TextField( null=True, blank=True)
     attachment = models.TextField( null=True, blank=True)  
     
+class ValidationArgeliaPersonas(models.Model):    
+    numero_documento = models.IntegerField(primary_key=True, db_column='NUMERO DOCUMENTO')
+    cupo = models.IntegerField(db_column='CUPO', blank=True, null=True)
+    nombres = models.TextField(db_column='NOMBRES', blank=True, null=True)
+    apellidos = models.TextField(db_column='APELLIDOS', blank=True, null=True)
+    telefono = models.TextField(db_column='TELEFONO', blank=True, null=True)
+    departamento = models.TextField(db_column='DEPARTAMENTO', blank=True, null=True)
+    municipio = models.TextField(db_column='MUNICIPIO', blank=True, null=True)
+    corregimiento = models.TextField(db_column='CORREGIMIENTO', blank=True, null=True)
+    vereda = models.TextField(db_column='VEREDA', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = '[report].[V_Argelia_Personas]'
 
 class Department(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
