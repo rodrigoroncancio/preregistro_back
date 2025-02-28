@@ -170,7 +170,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     fecha_expedicion = models.DateField(blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
     numero_contacto = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+    email = models.CharField(max_length=150, blank=True, null=True)
     sexo = models.CharField(max_length=20, blank=True, null=True)
     identidad_genero = models.CharField(max_length=10, blank=True, null=True)
     estado_civil = models.CharField(max_length=50, blank=True, null=True)
