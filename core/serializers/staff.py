@@ -2,8 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
-from pnis.mixins.baseFile import BaseFileMixin
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister
+from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
 
 
 class UserPNISSerializer(serializers.ModelSerializer):
@@ -65,30 +64,6 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificacion, 0)
         return f"{uncompleted}/7"
-
-
-class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
-    attachment = BaseFileMixin.base64_file()
-    user_name = serializers.SerializerMethodField()
-    class Meta:
-        model = ValidationRegister
-        fields = '__all__'
-            
-    def create(self, validated_data):
-        validated_data['user_id'] = self.context['request'].user.id
-        return super().create(validated_data)    
-        
-    def get_user_name(self, obj):
-        return obj.user.first_name + ' ' + obj.user.last_name
-    
-class ValidationRegisterLiteSerializer(serializers.ModelSerializer): 
-    user_name = serializers.SerializerMethodField()
-    class Meta:
-        model = ValidationRegister
-        fields = ['id', 'user_name', 'status', 'observation', 'attachment', 'validationitems_id']
-        
-    def get_user_name(self, obj):
-        return obj.user.first_name + ' ' + obj.user.last_name
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:

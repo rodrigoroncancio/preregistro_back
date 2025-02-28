@@ -8,8 +8,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count
 from rest_framework import status
 
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer
+from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister
+from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer
 
 from pnis.filters import ORFilterBackend
 

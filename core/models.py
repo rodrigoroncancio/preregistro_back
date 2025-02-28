@@ -1,6 +1,23 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class Rol(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=25)
+
+    class Meta:
+        managed = False
+        db_table = 'core_Rol'
+
+class RolUsuario(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+
+    class Meta:
+        managed = False
+        db_table = 'core_Rol_Usuario'
+
 class Staff(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     image = models.CharField(max_length=255, blank=True, null=True)
@@ -28,8 +45,9 @@ class SurveyForms_Privileges(models.Model):
     
 class ValidationItems(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField( null=True, blank=True)
-    survey = models.TextField( null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    survey = models.TextField(null=True, blank=True)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, blank=True)
     activated = models.BooleanField (default=True) 
 
 class ValidationRegister(models.Model):
