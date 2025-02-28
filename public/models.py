@@ -517,7 +517,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
 class FormArgeliaFichaAcuerdoNucleoFamiliar (models.Model):
     
-    ficha = models.models.ForeignKey(FormArgeliaFichaAcuerdo, on_delete=models.CASCADE)
+    ficha = models.ForeignKey(FormArgeliaFichaAcuerdo, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     tipo_identificacion = models.CharField(max_length=50, blank=True, null=True)
     tipo_identificacion_cual = models.CharField(max_length=255, blank=True, null=True)

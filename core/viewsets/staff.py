@@ -159,38 +159,6 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
 
-class ValidationRegisterViewSet (viewsets.ModelViewSet):
-
-    permission_classes = [IsAdminUser]
-    serializer_class = ValidationRegisterSerializer
-    queryset = ValidationRegister.objects.all()
-
-    @action(detail=False, methods=['get'], url_path='missing-validation-items/<str:document_number>/<int:survey_id>/')
-    def missing_validation_items(self, request, document_number, survey_id):
-        # Obtener los ValidationItems registrados en ValidationRegister con ese document_number y survey_id
-        registered_items = ValidationRegister.objects.filter(
-            document_number=document_number,
-            SurveyForms_id=survey_id
-        ).values_list('validationitems_id', flat=True)
-
-        # Obtener los ValidationItems que no están registrados
-        missing_items = ValidationItems.objects.filter(activated = True).exclude(id__in=registered_items)
-
-        # Serializar los resultados
-        return Response({"missing_items": list(missing_items.values())})
-
-    @action(detail=False, methods=['get'], url_path='filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>/')
-    def filterbydocumentnumber(self, request, document_number, survey_id, status):
-        registered_items = ValidationRegister.objects.filter(
-            document_number=document_number,
-            SurveyForms_id=survey_id,
-            status=status
-        )
-
-        # Usar el serializer ligero
-        serializer = ValidationRegisterLiteSerializer(registered_items, many=True)
-        return Response(serializer.data)
-
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = DepartmentSerializer
