@@ -160,7 +160,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         return context
 
 class DepartmentViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = []
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
 
@@ -170,7 +170,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         return Response(list(departments_list))
 
 class MunicipalityViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = []
     serializer_class = MunicipalitySerializer
     queryset = Municipality.objects.all()
 
@@ -186,7 +186,7 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
         return Response(list(municipalities_list))
 
 class TownshipViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = []
     serializer_class = TownshipSerializer
     queryset = Township.objects.all()
 
@@ -202,7 +202,7 @@ class TownshipViewSet(viewsets.ModelViewSet):
         return Response(list(townships_list))
 
 class VillageViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = []
     serializer_class = VillageSerializer
     queryset = Village.objects.all()
 
