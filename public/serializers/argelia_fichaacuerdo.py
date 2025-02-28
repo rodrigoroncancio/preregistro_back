@@ -39,18 +39,6 @@ class FormArgeliaFichaAcuerdoNucleoFamiliarSerializer(serializers.ModelSerialize
         model = FormArgeliaFichaAcuerdoNucleoFamiliar
         fields = '__all__'  # Serializa todos los campos
 
-class MultiplePersonasSerializer(serializers.Serializer):
-    personas = serializers.DictField(
-        child=FormArgeliaFichaAcuerdoNucleoFamiliarSerializer()
-    )
 
-    def create(self, validated_data):
-        # Iterar sobre cada persona y guardarla en la base de datos
-        personas_data = validated_data.get('personas', {})
-        personas_creadas = []
-        for key, persona_data in personas_data.items():
-            persona = FormArgeliaFichaAcuerdoNucleoFamiliar.objects.create(**persona_data)
-            personas_creadas.append(persona)
-        return personas_creadas
         
         
