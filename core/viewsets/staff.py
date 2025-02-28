@@ -160,7 +160,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         return context
 
 class DepartmentViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = []
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
 

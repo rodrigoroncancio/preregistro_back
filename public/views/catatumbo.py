@@ -64,6 +64,7 @@ class CatatumboValidaDocumentoView(APIView):
         return Response(False, status=status.HTTP_200_OK)
     
 class ArgeliaFichaValidaDocumentoView(APIView):
+    permission_classes = []
     def get(self, request):
         documento = request.query_params.get('documento')
 
@@ -92,6 +93,7 @@ class ArgeliaFichaValidaDocumentoView(APIView):
     
     
 class ArgeliaFichaAcuerdoNucleoView(APIView):
+    permission_classes = []
     def post(self, request, *args, **kwargs):
         # Pasamos los datos correctamente con el argumento `data=`
         serializer = FormArgeliaFichaAcuerdoNucleoFamiliarSerializer(data=request.data, many=True)
@@ -130,7 +132,7 @@ class CatatumboPreinscripcionFamiliasPnisView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ArgeliaFichaAcuerdoView(APIView):
-
+    permission_classes = []
     def post(self, request):
         serializer = ArgeliaFichaAcuerdoSerializer(data=request.data)
         if serializer.is_valid():
