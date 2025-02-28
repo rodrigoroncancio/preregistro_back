@@ -9,6 +9,7 @@ from ..serializers.catatumbo_preinscripciondesplazados import CatatumboPreincrip
 from ..serializers.catatumbo_preinscripciongrupoproductores import CatatumboPreincripcionGrupoProductoresSerializer
 from ..serializers.catatumbo_preinscripcionnucleosindividuales import CatatumboPreincripcionNucleosIndividualesSerializer
 from ..serializers.catatumbo_preinscripcionfamiliaspnis import CatatumboPreincripcionFamiliasPnisSerializer
+from ..serializers.argelia_fichaacuerdo import ArgeliaFichaAcuerdoSerializer, FormArgeliaFichaAcuerdoNucleoFamiliarSerializer, MultiplePersonasSerializer
 
 class CatatumboPreregistroView(APIView):
 
@@ -59,7 +60,16 @@ class CatatumboValidaDocumentoView(APIView):
             return Response(True, status=status.HTTP_200_OK)
 
         return Response(False, status=status.HTTP_200_OK)
+    
+    
+class ArgeliaFichaAcuerdoNucleoView(APIView):
 
+    def post(self, request, *args, **kwargs):
+        serializer = FormArgeliaFichaAcuerdoNucleoFamiliarSerializer(data={"personas": request.data})
+        if serializer.is_valid():
+            personas = serializer.save()
+            return Response({"message": "Personas creadas correctamente", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CatatumboPreinscripcionGrupoProductoresView(APIView):
 
@@ -83,6 +93,15 @@ class CatatumboPreinscripcionFamiliasPnisView(APIView):
 
     def post(self, request):
         serializer = CatatumboPreincripcionFamiliasPnisSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ArgeliaFichaAcuerdoView(APIView):
+
+    def post(self, request):
+        serializer = ArgeliaFichaAcuerdoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

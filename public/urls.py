@@ -14,4 +14,6 @@ urlpatterns = [
     path('forms/catatumbo/preinscripciongrupoproductores/', CatatumboPreinscripcionGrupoProductoresView.as_view(), name='catatumbo-preinscripciondesgruposproductores'),
     path('forms/catatumbo/preinscripcionnucleosindividuales/', CatatumboPreinscripcionNucleosIndividualesView.as_view(), name='catatumbo-preinscripciondesNucleosIndividuales'),
     path('forms/catatumbo/preinscripcionfamiliaspnis/', CatatumboPreinscripcionFamiliasPnisView.as_view(), name='catatumbo-preinscripciondesFamiliasPnis'),
+    path('forms/argelia/fichaacuerdo/', ArgeliaFichaAcuerdoView.as_view(), name='argelia-fichaacuerdo'),
+    path('forms/argelia/fichaacuerdonucleo/', ArgeliaFichaAcuerdoNucleoView.as_view(), name='argelia-fichaacuerdo'),
 ]
