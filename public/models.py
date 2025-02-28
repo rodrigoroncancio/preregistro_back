@@ -178,6 +178,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     escolaridad = models.CharField(max_length=50, blank=True, null=True)
     escolaridad_otro = models.CharField(max_length=255, blank=True, null=True)
     tipo_salud = models.CharField(max_length=50, blank=True, null=True)
+    firma = models.TextField( blank=True, null=True)
  
 
     grupo_especial = models.TextField(default=list, blank=True)
@@ -517,7 +518,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
 class FormArgeliaFichaAcuerdoNucleoFamiliar (models.Model):
     
-    ficha = models.ForeignKey(FormArgeliaFichaAcuerdo, on_delete=models.CASCADE)
+    ficha = models.ForeignKey(FormArgeliaFichaAcuerdo, on_delete=models.CASCADE, blank=True, null=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
     tipo_identificacion = models.CharField(max_length=50, blank=True, null=True)
     tipo_identificacion_cual = models.CharField(max_length=255, blank=True, null=True)
