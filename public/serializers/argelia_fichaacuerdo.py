@@ -27,6 +27,7 @@ class ArgeliaFichaAcuerdoSerializer(serializers.ModelSerializer):
     predio8_arraigo_documento_soporte= BaseFileMixin.base64_file()
     predio9_arraigo_documento_soporte= BaseFileMixin.base64_file()
     predio10_arraigo_documento_soporte= BaseFileMixin.base64_file()
+    firma_file= BaseFileMixin.base64_file()
     
     documento_pertenencia_etnica_file= BaseFileMixin.base64_file()
 
