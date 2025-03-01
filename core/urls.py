@@ -3,7 +3,7 @@ from django.urls import path
 
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
 from .viewsets.validation_register import ValidationRegisterViewSet
-from .viewsets.staff import StaffViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
+from .viewsets.staff import StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .apiview.user import UserAPIView
 
 router = routers.SimpleRouter()
@@ -11,6 +11,7 @@ router.register(r'staff', StaffViewSet, basename='staff')
 router.register(r'userpnis', UserPnisViewSet, basename='userpnis')
 router.register(r'argeliagrupos', ArgeliaGruposViewSet, basename='argeliagrupos')
 router.register(r'argeliapersonas', ArgeliaPersonasViewSet, basename='argeliapersonas')
+router.register(r'fichaacuerdofase2', FichaAcuerdoFase2ViewSet, basename='fichaacuerdofase2')
 router.register(r'departments', DepartmentViewSet, basename='departments')
 router.register(r'municipalities', MunicipalityViewSet, basename='municipalities')
 router.register(r'townships', TownshipViewSet, basename='townships')

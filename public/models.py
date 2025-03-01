@@ -165,6 +165,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     tipo_identificacion = models.CharField(max_length=50, blank=True, null=True)
     tipo_identificacion_cual = models.CharField(max_length=255, blank=True, null=True)
     numero_identificacion = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     foto_doc_frente = models.TextField( blank=True, null=True)
     foto_doc_atras = models.TextField( blank=True, null=True)
     firma_file = models.TextField( blank=True, null=True)

@@ -8,8 +8,10 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count
 from rest_framework import status
 
+from public.models import FormArgeliaFichaAcuerdo
+
 from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer
+from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer, FichaAcuerdoFase2Serializer
 
 from pnis.filters import ORFilterBackend
 
@@ -111,6 +113,18 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
+
+class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = FichaAcuerdoFase2Serializer
+    queryset = FormArgeliaFichaAcuerdo.objects.all()
+    filter_backends = [ORFilterBackend]
+    search_fields = ['numero_identificacion',
+        'nombre',
+        'linea_productiva'
+    ]
+
 
 class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
