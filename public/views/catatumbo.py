@@ -67,6 +67,16 @@ class ArgeliaFichaValidaDocumentoView(APIView):
     permission_classes = []
     def get(self, request):
         documento = request.query_params.get('documento')
+        
+        if FormArgeliaFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
+            return Response(
+            {
+                "status": 2,
+                "data": {}
+            },
+            status=status.HTTP_200_OK
+        ) 
+
 
         # Buscar si el documento existe
         registro = ArgeliaPersonas.objects.filter(identificacion=documento).first()
@@ -76,7 +86,7 @@ class ArgeliaFichaValidaDocumentoView(APIView):
             serializer = ArgeliaPersonasSerializer(registro)
             return Response(
                 {
-                    "success": True,
+                    "status": 1,
                     "data": serializer.data
                 },
                 status=status.HTTP_200_OK
@@ -85,7 +95,7 @@ class ArgeliaFichaValidaDocumentoView(APIView):
         # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
         return Response(
             {
-                "success": False,
+                "status": 3,
                 "data": {}
             },
             status=status.HTTP_200_OK
