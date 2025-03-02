@@ -371,8 +371,17 @@ class ArgeliaPersonas(models.Model):
     lecturaterminos = models.TextField(db_column='LECTURA TERMINOS', null=True, blank=True)
     lecturatratamiento_datos = models.TextField(db_column='LECTURA TRATAMIENTO DATOS', null=True, blank=True)
     instanceid = models.TextField(db_column='INSTANCEID', null=True, blank=True)
-    
+
     class Meta:
-        db_table = '[stg].[Argelia_Personas]'
+        db_table = '[stg].[Argelia_Personas]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
+        managed = False  # Evita que Django intente modificar la tabla
+
+class ArgeliaPersonasValidadas(models.Model):
+    numero_identificacion = models.TextField(db_column='NUMERO DOCUMENTO', null=True, blank=True)
+    nombres = models.TextField(db_column='NOMBRES', null=True, blank=True)
+    apellidos = models.TextField(db_column='APELLIDOS', null=True, blank=True)
+        
+    class Meta:
+        db_table = '[report].[V_Argelia_Personas_Validas]'
         managed = False  # Evita que Django intente modificar la tabla     
         
