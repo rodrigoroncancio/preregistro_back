@@ -10,19 +10,28 @@ from rest_framework import status
 
 from public.models import FormArgeliaFichaAcuerdo
 
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer, FichaAcuerdoFase2Serializer
+from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
+from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer, FichaAcuerdoFase2Serializer
 
 from pnis.filters import ORFilterBackend
 
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_superuser)
+    
+class NucleoFamiliarViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = NucleoFamiliarSerializer
+    queryset = NucleoFamiliarPersonas.objects.all()
+   
+    def get_queryset(self):
+        documento = self.kwargs.get('documento')  # Obtener el parámetro de la URL
+        return NucleoFamiliarPersonas.objects.filter(titular_identificacion=documento)  # Filtrar por titular_identificacion
 
 class UserPnisViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = UserPNISSerializer
-    queryset = UserPNIS.objects.all()
+    queryset = UserPNIS.objects.filter(signature__isnull=False).all()
     filter_backends = [ORFilterBackend]
     search_fields = ['identificationnumber',
         'name',
@@ -122,7 +131,7 @@ class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
     filter_backends = [ORFilterBackend]
     search_fields = ['numero_identificacion',
         'nombre',
-        'linea_productiva'
+        'numero_identificacion'
     ]
 
 
