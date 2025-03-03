@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import  ArgeliaPersonas
+from core.models import  ArgeliaPersonas, ValidationArgeliaPersonas, ArgeliaPersonasValidadas
 from core.serializers.staff import ArgeliaPersonasSerializer
 from ..models import FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormCatatumboPreinscripcionNucleosIndividuales , FormArgeliaFichaAcuerdo
 
@@ -67,29 +67,56 @@ class ArgeliaFichaValidaDocumentoView(APIView):
     permission_classes = []
     def get(self, request):
         documento = request.query_params.get('documento')
-
-        # Buscar si el documento existe
-        registro = ArgeliaPersonas.objects.filter(identificacion=documento).first()
-
-        if registro:
-            # Serializar el registro encontrado
-            serializer = ArgeliaPersonasSerializer(registro)
+        
+        if FormArgeliaFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
             return Response(
-                {
-                    "success": True,
-                    "data": serializer.data
-                },
-                status=status.HTTP_200_OK
-            )
-
-        # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
-        return Response(
             {
-                "success": False,
+                "status": 2,
                 "data": {}
             },
             status=status.HTTP_200_OK
-        )   
+        ) 
+
+        if ArgeliaPersonasValidadas.objects.filter(numero_identificacion=documento).exists():
+        # Buscar si el documento existe
+            registro = ArgeliaPersonas.objects.filter(identificacion=documento).first()
+
+            if registro:
+                # Serializar el registro encontrado
+                serializer = ArgeliaPersonasSerializer(registro)
+                return Response(
+                    {
+                        "status": 1,
+                        "data": serializer.data
+                    },
+                    status=status.HTTP_200_OK
+                )
+                # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+            return Response(
+                {
+                    "status": 3,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )   
+
+        # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+        registro = ArgeliaPersonas.objects.filter(identificacion=documento).first()
+        if registro:
+            return Response(
+            {
+                "status": 4,
+                "data": {}
+            },
+            status=status.HTTP_200_OK
+        )  
+        else :
+            return Response(
+            {
+                "status": 3,
+                "data": {}
+            },
+            status=status.HTTP_200_OK)
     
     
 class ArgeliaFichaAcuerdoNucleoView(APIView):

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
 from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
-
+from public.models import FormArgeliaFichaAcuerdo
 
 class UserPNISSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
@@ -45,6 +45,10 @@ class ArgeliaGruposSerializer(serializers.ModelSerializer):
         uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
         return f"{uncompleted}/7"
     
+class FichaAcuerdoFase2Serializer(serializers.ModelSerializer):    
+    class Meta:
+        model = FormArgeliaFichaAcuerdo
+        fields = '__all__'
         
 class ArgeliaPersonasSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()

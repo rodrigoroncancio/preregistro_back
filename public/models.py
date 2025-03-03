@@ -165,11 +165,13 @@ class FormArgeliaFichaAcuerdo(models.Model):
     tipo_identificacion = models.CharField(max_length=50, blank=True, null=True)
     tipo_identificacion_cual = models.CharField(max_length=255, blank=True, null=True)
     numero_identificacion = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     foto_doc_frente = models.TextField( blank=True, null=True)
     foto_doc_atras = models.TextField( blank=True, null=True)
+    firma_file = models.TextField( blank=True, null=True)
     fecha_expedicion = models.DateField(blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
-    numero_contacto = models.CharField(max_length=20, blank=True, null=True)
+    numero_contacto = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=150, blank=True, null=True)
     sexo = models.CharField(max_length=20, blank=True, null=True)
     identidad_genero = models.CharField(max_length=10, blank=True, null=True)
@@ -195,6 +197,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     departamento = models.CharField(max_length=255, blank=True, null=True)
     municipio = models.CharField(max_length=255, blank=True, null=True)
+    corregimiento = models.CharField(max_length=255, blank=True, null=True)
     vereda = models.CharField(max_length=255, blank=True, null=True)
     predio_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio_area = models.FloatField(blank=True, null=True)
@@ -217,6 +220,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio1_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio1_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio1_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio1_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio1_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio1_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -245,6 +249,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio2_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio2_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio2_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio2_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio2_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio2_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -273,6 +278,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio3_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio3_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio3_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio3_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio3_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio3_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -302,6 +308,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio4_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio4_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio4_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio4_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio4_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio4_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -330,6 +337,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio5_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio5_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio5_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio5_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio5_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio5_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -359,6 +367,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio6_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio6_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio6_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio6_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio6_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio6_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -387,6 +396,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio7_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio7_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio7_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio7_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio7_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio7_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -415,6 +425,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio8_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio8_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio8_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio8_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio8_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio8_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -444,6 +455,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio9_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio9_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio9_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio9_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio9_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio9_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -472,6 +484,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     
     predio10_departamento = models.CharField(max_length=255, blank=True, null=True)
     predio10_municipio = models.CharField(max_length=255, blank=True, null=True)
+    predio10_corregimiento = models.CharField(max_length=255, blank=True, null=True)
     predio10_vereda = models.CharField(max_length=255, blank=True, null=True)
     predio10_nombre = models.CharField(max_length=255, blank=True, null=True)
     predio10_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
