@@ -11,7 +11,7 @@ class Rol(models.Model):
 
 class RolUsuario(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="roles")
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
 
     class Meta:
