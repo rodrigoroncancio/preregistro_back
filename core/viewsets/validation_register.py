@@ -12,7 +12,7 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
     serializer_class = ValidationRegisterSerializer
     queryset = ValidationRegister.objects.all()
 
-    # @action(detail=False, methods=['get'], url_path='missing-validation-items/<str:document_number>/<int:survey_id>')
+    @action(detail=False, methods=['get'], url_path='missing-validation-items/(?P<document_number>[^/.]+)/(?P<survey_id>[^/.]+)')
     def missing_validation_items(self, request, document_number, survey_id):
         auth = request.auth
         array_roles = auth.payload["roles"]
@@ -28,7 +28,7 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
         # Serializar los resultados
         return Response({"missing_items": list(missing_items.values())})
 
-    # @action(detail=False, methods=['get'], url_path='filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>')
+    @action(detail=False, methods=['get'], url_path='filterbydocumentnumber/(?P<document_number>[^/.]+)/(?P<survey_id>[^/.]+)/(?P<status>[^/.]+)')
     def filterbydocumentnumber(self, request, document_number, survey_id, status):
         if status == 'no':
             registered_items = ValidationRegister.objects.filter(
@@ -67,9 +67,10 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
         serializer = ValidationPersonasSerializer(validated_items, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'], url_path='items-validacion/lista')
-    def item_validacion(self, request):
-        validation_items = ValidationItems.objects.filter(activated = True).order_by('rol')
+    @action(detail=False, methods=['get'], url_path='items-validacion/(?P<survey_id>[^/.]+)')
+    def item_validacion(self, request, *args, **kwargs):
+        survey_id = int(kwargs['survey_id'])
+        validation_items = ValidationItems.objects.filter(survey=survey_id, activated = True).order_by('rol')
         # Serializar los resultados
         serializer = ValidationItemsSerializer(validation_items, many=True)
         return Response(serializer.data)

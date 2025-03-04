@@ -277,6 +277,7 @@ class UserPNIS(models.Model):
     experienceproductionline = models.CharField(max_length=255, null=True, blank=True, db_column='ExperienceProductionLine')
     # yearsexperienceproductionline = models.IntegerField(null=True, blank=True, db_column='YearsExperienceProductionLine')
     class Meta:
+        ordering = ('id',)
         db_table = 'Users'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
 
@@ -308,6 +309,7 @@ class ArgeliaGrupos(models.Model):
     num_personas_registradas = models.IntegerField(null=True, blank=True, db_column='NUM_PERSONAS_REGISTRADAS')
 
     class Meta:
+        ordering = ('cub',)
         db_table = '[stg].[V_Argelia_Encuesta_Grupo]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
         
