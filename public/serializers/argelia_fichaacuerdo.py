@@ -36,6 +36,8 @@ class ArgeliaFichaAcuerdoSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class FormArgeliaFichaAcuerdoNucleoFamiliarSerializer(serializers.ModelSerializer):
+    foto_doc_frente = BaseFileMixin.base64_file()
+    foto_doc_atras = BaseFileMixin.base64_file()
     class Meta:
         model = FormArgeliaFichaAcuerdoNucleoFamiliar
         fields = '__all__'  # Serializa todos los campos
