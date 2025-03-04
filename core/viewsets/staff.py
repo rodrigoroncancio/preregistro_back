@@ -1,4 +1,3 @@
-import json
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -6,14 +5,43 @@ from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAdminUser
 from django.contrib.auth import get_user_model
 from django.db.models import Count
-from rest_framework import status
 
 from public.models import FormArgeliaFichaAcuerdo
-
-from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer,ValidationRegisterSerializer, ValidationRegisterLiteSerializer, FichaAcuerdoFase2Serializer
-
+from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
+from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
 from pnis.filters import ORFilterBackend
+
+def setContext (context, formid):
+    auth = context['request'].auth
+    array_roles = auth.payload["roles"]
+    total_item = ValidationItems.objects.filter(rol_id__in=array_roles, survey=formid, activated=True).count()
+
+    # Construir las consultas filtradas
+    filter_params = Q()
+    if formid:
+        filter_params &= Q(SurveyForms_id=formid)
+
+    # Filtrar los registros con status = 1 (completados)
+    completed_query = (
+        ValidationRegister.objects.filter(validationitems__rol_id__in=array_roles)
+        .filter(filter_params & Q(status="si"))
+        .values('document_number')
+        .annotate(count=Count('id'))
+    )
+
+    # Filtrar los registros con status ≠ 1 (incompletos)
+    uncompleted_query = (
+        ValidationRegister.objects
+        .filter(filter_params & Q(status="no"))  # Invertimos la condición
+        .values('document_number')
+        .annotate(count=Count('id'))
+    )
+
+    # Agregar al contexto
+    context['validated_items'] = total_item
+    context['validated_counts_completed'] = {entry['document_number']: entry['count'] for entry in completed_query}
+    context['validated_counts_uncompleted'] = {entry['document_number']: entry['count'] for entry in uncompleted_query}
+    return context
 
 class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
@@ -40,9 +68,12 @@ class UserPnisViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
+        return setContext(context, self.kwargs.get('formid'))
+        """
+        auth = context['request'].auth
+        array_roles = auth.payload["roles"]
 
-        # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')
+        total_item = ValidationItems.objects.filter(rol_id__in=array_roles, survey=formid, activated=True).count()
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -73,6 +104,7 @@ class UserPnisViewSet(viewsets.ModelViewSet):
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
+        """
 
 class ArgeliaGruposViewSet (viewsets.ModelViewSet):
 
@@ -89,39 +121,7 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-
-        # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')
-
-        # Construir las consultas filtradas
-        filter_params = Q()
-        if formid:
-            filter_params &= Q(SurveyForms_id=formid)
-
-        # Filtrar los registros con status = 1 (completados)
-        completed_query = (
-            ValidationRegister.objects
-            .filter(filter_params & Q(status="si"))
-            .values('document_number')
-            .annotate(count=Count('id'))
-        )
-
-        # Filtrar los registros con status ≠ 1 (incompletos)
-        uncompleted_query = (
-            ValidationRegister.objects
-            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
-            .values('document_number')
-            .annotate(count=Count('id'))
-        )
-
-        # Convertir a diccionarios para acceso rápido
-        completed_dict = {entry['document_number']: entry['count'] for entry in completed_query}
-        uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
-
-        # Agregar al contexto
-        context['validated_counts_completed'] = completed_dict
-        context['validated_counts_uncompleted'] = uncompleted_dict
-        return context
+        return setContext(context, self.kwargs.get('formid'))
 
 class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
 
@@ -148,39 +148,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-
-        # Obtener el parámetro desde la URL
-        formid = self.kwargs.get('formid')
-
-        # Construir las consultas filtradas
-        filter_params = Q()
-        if formid:
-            filter_params &= Q(SurveyForms_id=formid)
-
-        # Filtrar los registros con status = 1 (completados)
-        completed_query = (
-            ValidationRegister.objects
-            .filter(filter_params & Q(status="si"))
-            .values('document_number')
-            .annotate(count=Count('id'))
-        )
-
-        # Filtrar los registros con status ≠ 1 (incompletos)
-        uncompleted_query = (
-            ValidationRegister.objects
-            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
-            .values('document_number')
-            .annotate(count=Count('id'))
-        )
-
-        # Convertir a diccionarios para acceso rápido
-        completed_dict = {entry['document_number']: entry['count'] for entry in completed_query}
-        uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
-
-        # Agregar al contexto
-        context['validated_counts_completed'] = completed_dict
-        context['validated_counts_uncompleted'] = uncompleted_dict
-        return context
+        return setContext(context, self.kwargs.get('formid'))
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = []

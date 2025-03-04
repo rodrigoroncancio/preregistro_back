@@ -1,6 +1,23 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class Rol(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=25)
+
+    class Meta:
+        managed = False
+        db_table = 'core_Rol'
+
+class RolUsuario(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="roles")
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+
+    class Meta:
+        managed = False
+        db_table = 'core_Rol_Usuario'
+
 class Staff(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     image = models.CharField(max_length=255, blank=True, null=True)
@@ -28,8 +45,9 @@ class SurveyForms_Privileges(models.Model):
     
 class ValidationItems(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField( null=True, blank=True)
-    survey = models.TextField( null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    survey = models.TextField(null=True, blank=True)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, blank=True)
     activated = models.BooleanField (default=True) 
 
 class ValidationRegister(models.Model):
@@ -61,7 +79,7 @@ class ValidationArgeliaPersonas(models.Model):
 
     class Meta:
         managed = False
-        db_table = '[report].[V_Argelia_Personas]'
+        db_table = '[report].[V_Argelia_Personas_Validas]'
 
 class Department(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
@@ -259,54 +277,40 @@ class UserPNIS(models.Model):
     experienceproductionline = models.CharField(max_length=255, null=True, blank=True, db_column='ExperienceProductionLine')
     # yearsexperienceproductionline = models.IntegerField(null=True, blank=True, db_column='YearsExperienceProductionLine')
     class Meta:
+        ordering = ('id',)
         db_table = 'Users'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
 
 
 class ArgeliaGrupos(models.Model):
-    id = models.CharField(primary_key=True, max_length=41, db_column='id')
-    submissiondate = models.TextField(null=True, blank=True, db_column='SUBMISSIONDATE')
-    updatedat = models.TextField(null=True, blank=True, db_column='UPDATEDAT')
-    submitterid = models.TextField(null=True, blank=True, db_column='SUBMITTERID')
-    submittername = models.TextField(null=True, blank=True, db_column='SUBMITTERNAME')
-    attachmentspresent = models.TextField(null=True, blank=True, db_column='ATTACHMENTSPRESENT')
-    attachmentsexpected = models.TextField(null=True, blank=True, db_column='ATTACHMENTSEXPECTED')
-    status = models.TextField(null=True, blank=True, db_column='STATUS')
-    reviewstate = models.TextField(null=True, blank=True, db_column='REVIEWSTATE')
-    deviceid = models.TextField(null=True, blank=True, db_column='DEVICEID')
-    edits = models.TextField(null=True, blank=True, db_column='EDITS')
-    formversion = models.TextField(null=True, blank=True, db_column='FORMVERSION')
-    nota1 = models.TextField(null=True, blank=True, db_column='NOTA1')
-    nota2 = models.TextField(null=True, blank=True, db_column='NOTA2')
-    lineaproductiva = models.TextField(null=True, blank=True, db_column='LINEA PRODUCTIVA')
-    experiencialineaproductiva = models.TextField(null=True, blank=True, db_column='EXPERIENCIA LINEA PRODUCTIVA')
-    experiencialineaproductiva_anos = models.TextField(null=True, blank=True, db_column='EXPERIENCIA LINEA PRODUCTIVA ANOS')
-    nota3 = models.TextField(null=True, blank=True, db_column='NOTA3')
+    id = models.CharField(max_length=41, primary_key=True, db_column='__id')
+    cub = models.IntegerField(null=True, blank=True, db_column='CUB_ASOCIACION')
+    linea_productiva = models.TextField(null=True, blank=True, db_column='LINEA PRODUCTIVA')
+    experiencia_linea_productiva = models.TextField(null=True, blank=True, db_column='EXPERIENCIA LINEA PRODUCTIVA')
+    experiencia_linea_productiva_agnos = models.TextField(null=True, blank=True, db_column='EXPERIENCIA LINEA PRODUCTIVA ANOS')
     fecha = models.TextField(null=True, blank=True, db_column='FECHA')
-    grupoproductores = models.TextField(null=True, blank=True, db_column='GRUPO PRUDUCTORES')
-    tipoorganizacion = models.TextField(null=True, blank=True, db_column='TIPO ORGANIZACION')
-    tipoorganizacioncual = models.TextField(null=True, blank=True, db_column='TIPO ORGANIZACION CUAL')
-    identificacionorganizacion = models.TextField(null=True, blank=True, db_column='IDENTIFICACION ORGANIZACION')
+    grupo_pruductores = models.TextField(null=True, blank=True, db_column='GRUPO PRUDUCTORES')
+    tipo_organizacion = models.TextField(null=True, blank=True, db_column='TIPO ORGANIZACION')
+    tipo_organizacion_cual = models.TextField(null=True, blank=True, db_column='TIPO ORGANIZACION CUAL')
+    identificacion_organizacion = models.TextField(null=True, blank=True, db_column='IDENTIFICACION ORGANIZACION')
     representante = models.TextField(null=True, blank=True, db_column='REPRESENTANTE')
-    cedularepresentante = models.TextField(null=True, blank=True, db_column='CEDULA REPRESENTANTE')
+    cedula_representante = models.TextField(null=True, blank=True, db_column='CEDULA REPRESENTANTE')
     telefono = models.TextField(null=True, blank=True, db_column='TELEFONO')
     correo = models.TextField(null=True, blank=True, db_column='CORREO')
-    nota4 = models.TextField(null=True, blank=True, db_column='NOTA4')
-    departamentoinfluencia = models.TextField(null=True, blank=True, db_column='DEPARTAMENTO INFLUENCIA')
-    municipioinfluencia = models.TextField(null=True, blank=True, db_column='MUNICIPIO INFLUENCIA')
-    veredainfluencia = models.TextField(null=True, blank=True, db_column='VEREDA INFLUENCIA')
-    fechacreacion = models.TextField(null=True, blank=True, db_column='FECHA CREACION')
-    principaleslineasproductivas = models.TextField(null=True, blank=True, db_column='PRINCIPALES LINEAS PRODUCTIVAS')
-    principaleslineasproductivascual = models.TextField(null=True, blank=True, db_column='PRINCIPALES LINEAS PRODUCTIVAS CUAL')
-    nota5 = models.TextField(null=True, blank=True, db_column='NOTA5')
+    departamento_influencia = models.TextField(null=True, blank=True, db_column='DEPARTAMENTO INFLUENCIA')
+    municipio_influencia = models.TextField(null=True, blank=True, db_column='MUNICIPIO INFLUENCIA')
+    vereda_influencia = models.TextField(null=True, blank=True, db_column='VEREDA INFLUENCIA')
+    fecha_creacion = models.TextField(null=True, blank=True, db_column='FECHA CREACION')
+    principales_lineas_productivas = models.TextField(null=True, blank=True, db_column='PRINCIPALES LINEAS PRODUCTIVAS')
+    principales_lineas_productivas_cual = models.TextField(null=True, blank=True, db_column='PRINCIPALES LINEAS PRODUCTIVAS CUAL')
     departamento = models.TextField(null=True, blank=True, db_column='DEPARTAMENTO')
     municipio = models.TextField(null=True, blank=True, db_column='MUNICIPIO')
-    numero_familias_grupo_productores = models.TextField(null=True, blank=True, db_column='NUMERO FAMILIAS GRUPO PRUDUCTORES')
-    nota6 = models.TextField(null=True, blank=True, db_column='NOTA6')
-    instance_id = models.TextField(null=True, blank=True, db_column='INSTANCEID')
+    numero_familias_grupo_pruductores = models.TextField(null=True, blank=True, db_column='NUMERO FAMILIAS GRUPO PRUDUCTORES')
+    num_personas_registradas = models.IntegerField(null=True, blank=True, db_column='NUM_PERSONAS_REGISTRADAS')
 
     class Meta:
-        db_table = '[stg].[Argelia_Grupos]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
+        ordering = ('cub',)
+        db_table = '[stg].[V_Argelia_Encuesta_Grupo]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
         
 

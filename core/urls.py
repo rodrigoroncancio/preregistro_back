@@ -30,7 +30,7 @@ urlpatterns = router.urls + [
     path('userpnis/getnucleo/<str:documento>/', NucleoFamiliarViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('argeliagrupos/filterbysurvey/<int:formid>/', ArgeliaGruposViewSet.as_view({'get': 'list'}), name='argeliagrupos-filterbysurvey'),
     path('argeliapersonas/filterbysurvey/<int:formid>/', ArgeliaPersonasViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
-    path('validationregister/missing-validation-items/<str:document_number>/<int:survey_id>/', ValidationRegisterViewSet.as_view({'get': 'missing_validation_items'}), name='missing-validation-items'),
-    path('validationregister/filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>/', ValidationRegisterViewSet.as_view({'get': 'filterbydocumentnumber'}), name='filterbydocumentnumber'),
+    # path('validationregister/missing-validation-items/<str:document_number>/<int:survey_id>/', ValidationRegisterViewSet.as_view({'get': 'missing_validation_items'}), name='missing-validation-items'),
+    # path('validationregister/filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>/', ValidationRegisterViewSet.as_view({'get': 'filterbydocumentnumber'}), name='filterbydocumentnumber'),
     # path('user-pnis/data/<int:pnis_id>/', UserPnisAPIView.as_view(), name='user-pnis-detail'),  # Registro específico
 ]

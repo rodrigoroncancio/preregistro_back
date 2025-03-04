@@ -2,8 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
-from pnis.mixins.baseFile import BaseFileMixin
-from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister
+from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
 from public.models import FormArgeliaFichaAcuerdo
 
 class NucleoFamiliarSerializer(serializers.ModelSerializer):
@@ -22,15 +21,16 @@ class UserPNISSerializer(serializers.ModelSerializer):
 
     def get_number_completed(self, obj):
         # Obtiene el diccionario de conteo de registros completados
+        count_items = self.context.get('validated_items', 0)
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.identificationnumber, 0)
-        return f"{completed}/7"
+        return f"{completed}/{count_items}"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificationnumber, 0)
-        return f"{uncompleted}/7"
+        return f"{uncompleted}"
 
     
 class ArgeliaGruposSerializer(serializers.ModelSerializer):
@@ -42,15 +42,16 @@ class ArgeliaGruposSerializer(serializers.ModelSerializer):
         
     def get_number_completed(self, obj):
         # Obtiene el diccionario de conteo de registros completados
+        count_items = self.context.get('validated_items', 0)
         completed_counts = self.context.get('validated_counts_completed', {})
-        completed = completed_counts.get(obj.cedularepresentante, 0)
-        return f"{completed}/7"
+        completed = completed_counts.get(obj.cedula_representante, 0)
+        return f"{completed}/{count_items}"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
-        uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
-        return f"{uncompleted}/7"
+        uncompleted = uncompleted_counts.get(obj.cedula_representante, 0)
+        return f"{uncompleted}"
     
 class FichaAcuerdoFase2Serializer(serializers.ModelSerializer):    
     class Meta:
@@ -66,39 +67,16 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
         
     def get_number_completed(self, obj):
         # Obtiene el diccionario de conteo de registros completados
+        count_items = self.context.get('validated_items', 0)
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.identificacion, 0)
-        return f"{completed}/7"
+        return f"{completed}/{count_items}"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificacion, 0)
-        return f"{uncompleted}/7"
-
-
-class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
-    attachment = BaseFileMixin.base64_file()
-    user_name = serializers.SerializerMethodField()
-    class Meta:
-        model = ValidationRegister
-        fields = '__all__'
-            
-    def create(self, validated_data):
-        validated_data['user_id'] = self.context['request'].user.id
-        return super().create(validated_data)    
-        
-    def get_user_name(self, obj):
-        return obj.user.first_name + ' ' + obj.user.last_name
-    
-class ValidationRegisterLiteSerializer(serializers.ModelSerializer): 
-    user_name = serializers.SerializerMethodField()
-    class Meta:
-        model = ValidationRegister
-        fields = ['id', 'user_name', 'status', 'observation', 'attachment', 'validationitems_id']
-        
-    def get_user_name(self, obj):
-        return obj.user.first_name + ' ' + obj.user.last_name
+        return f"{uncompleted}"
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
