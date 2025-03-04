@@ -387,3 +387,17 @@ class ArgeliaPersonasValidadas(models.Model):
         db_table = '[report].[V_Argelia_Personas_Validas]'
         managed = False  # Evita que Django intente modificar la tabla     
         
+class NucleoFamiliarPersonas(models.Model):
+    titular_identificacion = models.TextField(db_column='titular_identificacion', null=True, blank=True)
+    beneficiario_identificationNumber = models.TextField(db_column='beneficiario_identificationnumber', null=True, blank=True)
+    beneficiario_nombre = models.TextField(db_column='beneficiario_nombre', null=True, blank=True)
+    beneficiario_apellido = models.TextField(db_column='beneficiario_apellido', null=True, blank=True)
+    estado_civil = models.TextField(db_column='estado_civil', null=True, blank=True)
+    Birthdate = models.TextField(db_column='Birthdate', null=True, blank=True)
+    especial = models.TextField(db_column='especial', null=True, blank=True)
+    parentesco = models.TextField(db_column='Relationship', null=True, blank=True)
+        
+    class Meta:
+        db_table = '[dbo].[V_NucleoFamiliar]'
+        managed = False  # Evita que Django intente modificar la tabla             
+        

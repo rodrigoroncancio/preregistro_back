@@ -2,8 +2,14 @@ from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
-from core.models import Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
+from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
 from public.models import FormArgeliaFichaAcuerdo
+
+class NucleoFamiliarSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NucleoFamiliarPersonas
+        fields = '__all__'
 
 class UserPNISSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
