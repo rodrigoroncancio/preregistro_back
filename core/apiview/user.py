@@ -43,7 +43,7 @@ class UserAPIView(APIView):
 
 
     
-    
+# sin uso actual
 class UserPnisA2PIView(APIView):
 
     def get(self, request):

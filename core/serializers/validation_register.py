@@ -33,6 +33,7 @@ class ValidationPersonasSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ValidationItemsSerializer(serializers.ModelSerializer):
+    rolname = serializers.CharField(source='rol.nombre')
     class Meta:
         model = ValidationItems
-        fields = ['id', 'name', 'survey', 'rol']
+        fields = ['id', 'name', 'survey', 'rol', 'rolname']

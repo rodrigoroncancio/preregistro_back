@@ -1,4 +1,3 @@
-import json
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -6,10 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAdminUser
 from django.contrib.auth import get_user_model
 from django.db.models import Count
-from rest_framework import status
 
 from public.models import FormArgeliaFichaAcuerdo
-from core.models import UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister
+from core.models import UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
 from core.serializers.staff import StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
 from pnis.filters import ORFilterBackend
 
@@ -81,6 +79,10 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
 
         # Obtener el parámetro desde la URL
         formid = self.kwargs.get('formid')
+        auth = context['request'].auth
+        array_roles = auth.payload["roles"]
+
+        total_item = ValidationItems.objects.filter(rol_id__in=array_roles, survey=formid, activated=True).count()
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -89,7 +91,7 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
 
         # Filtrar los registros con status = 1 (completados)
         completed_query = (
-            ValidationRegister.objects
+            ValidationRegister.objects.filter(validationitems__rol_id__in=array_roles)
             .filter(filter_params & Q(status="si"))
             .values('document_number')
             .annotate(count=Count('id'))
@@ -98,7 +100,7 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
         # Filtrar los registros con status ≠ 1 (incompletos)
         uncompleted_query = (
             ValidationRegister.objects
-            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
+            .filter(filter_params & Q(status="no"))  # Invertimos la condición
             .values('document_number')
             .annotate(count=Count('id'))
         )
@@ -108,6 +110,7 @@ class ArgeliaGruposViewSet (viewsets.ModelViewSet):
         uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
 
         # Agregar al contexto
+        context['validated_items'] = total_item
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context
@@ -140,6 +143,10 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
         # Obtener el parámetro desde la URL
         formid = self.kwargs.get('formid')
+        auth = context['request'].auth
+        array_roles = auth.payload["roles"]
+
+        total_item = ValidationItems.objects.filter(rol_id__in=array_roles, survey=formid, activated=True).count()
 
         # Construir las consultas filtradas
         filter_params = Q()
@@ -148,7 +155,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
         # Filtrar los registros con status = 1 (completados)
         completed_query = (
-            ValidationRegister.objects
+            ValidationRegister.objects.filter(validationitems__rol_id__in=array_roles)
             .filter(filter_params & Q(status="si"))
             .values('document_number')
             .annotate(count=Count('id'))
@@ -157,7 +164,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         # Filtrar los registros con status ≠ 1 (incompletos)
         uncompleted_query = (
             ValidationRegister.objects
-            .filter(filter_params & ~Q(status="si"))  # Invertimos la condición
+            .filter(filter_params & Q(status="no"))  # Invertimos la condición
             .values('document_number')
             .annotate(count=Count('id'))
         )
@@ -167,6 +174,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
         uncompleted_dict = {entry['document_number']: entry['count'] for entry in uncompleted_query}
 
         # Agregar al contexto
+        context['validated_items'] = total_item
         context['validated_counts_completed'] = completed_dict
         context['validated_counts_uncompleted'] = uncompleted_dict
         return context

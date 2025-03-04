@@ -35,15 +35,17 @@ class ArgeliaGruposSerializer(serializers.ModelSerializer):
         
     def get_number_completed(self, obj):
         # Obtiene el diccionario de conteo de registros completados
+        count_items = self.context.get('validated_items', 0)
         completed_counts = self.context.get('validated_counts_completed', {})
-        completed = completed_counts.get(obj.cedularepresentante, 0)
-        return f"{completed}/7"
+        completed = completed_counts.get(obj.cedula_representante, 0)
+        return f"{completed}/{count_items}"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
+        count_items = self.context.get('validated_items', 0)
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
-        uncompleted = uncompleted_counts.get(obj.cedularepresentante, 0)
-        return f"{uncompleted}/7"
+        uncompleted = uncompleted_counts.get(obj.cedula_representante, 0)
+        return f"{uncompleted}"
     
 class FichaAcuerdoFase2Serializer(serializers.ModelSerializer):    
     class Meta:
@@ -59,15 +61,17 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
         
     def get_number_completed(self, obj):
         # Obtiene el diccionario de conteo de registros completados
+        count_items = self.context.get('validated_items', 0)
         completed_counts = self.context.get('validated_counts_completed', {})
         completed = completed_counts.get(obj.identificacion, 0)
-        return f"{completed}/7"
+        return f"{completed}/{count_items}"
 
     def get_number_uncompleted(self, obj):
         # Obtiene el diccionario de conteo de registros incompletos
+        count_items = self.context.get('validated_items', 0)
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificacion, 0)
-        return f"{uncompleted}/7"
+        return f"{uncompleted}"
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
