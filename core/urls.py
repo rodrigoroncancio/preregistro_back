@@ -4,7 +4,7 @@ from django.urls import path
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
 from .viewsets.validation_register import ValidationRegisterViewSet
 from .viewsets.staff import NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
-from .apiview.user import UserAPIView
+from .viewsets.user import UserViewSet
 
 router = routers.SimpleRouter()
 router.register(r'staff', StaffViewSet, basename='staff')
@@ -19,7 +19,8 @@ router.register(r'villages', VillageViewSet, basename='villages')
 router.register(r'validationregister', ValidationRegisterViewSet)
 
 urlpatterns = router.urls + [
-    path('user/data/', UserAPIView.as_view(), name='get-user-data'),
+    path('user/data/', UserViewSet.as_view({'get': 'user_data'}), name='get-user-data'),
+    path('user/roles/', UserViewSet.as_view({'get': 'roles'}), name='get-user-roles'),
     path('municipalities/by-department/<int:department_id>/', MunicipalityViewSet.as_view({'get': 'list'}), name='municipalities-by-department'),
     path('townships/by-municipality/<int:municipality_id>/', TownshipViewSet.as_view({'get': 'list'}), name='townships-by-municipality'),
     path('villages/by-township/<int:township_id>/', VillageViewSet.as_view({'get': 'list'}), name='villages-by-township'),

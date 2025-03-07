@@ -8,7 +8,8 @@ from django.db.models import Count
 
 from public.models import FormArgeliaFichaAcuerdo
 from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from core.serializers.list import DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
 from pnis.filters import ORFilterBackend
 
 def setContext (context, formid):
@@ -219,7 +220,7 @@ class StaffViewSet (viewsets.ModelViewSet):
         if user.is_superuser:
             return get_user_model().objects.filter(Q(is_superuser=True) | Q(is_staff=True)).all()
         elif user.is_staff:
-            return get_user_model().objects.filter(Q(is_superuser=True) | Q(is_staff=True)).filter(id=user.id).all()
+            return get_user_model().objects.filter(id=user.id).all()
         return get_user_model().objects.none()
 
     @action(detail=False, methods=['get'], url_path='lts')

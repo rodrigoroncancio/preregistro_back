@@ -2,7 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
-from core.models import NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
+from core.models import NucleoFamiliarPersonas, Staff, Rol, RolUsuario, UserPNIS, ArgeliaGrupos, ArgeliaPersonas
 from public.models import FormArgeliaFichaAcuerdo
 
 class NucleoFamiliarSerializer(serializers.ModelSerializer):
@@ -77,27 +77,6 @@ class ArgeliaPersonasSerializer(serializers.ModelSerializer):
         uncompleted_counts = self.context.get('validated_counts_uncompleted', {})
         uncompleted = uncompleted_counts.get(obj.identificacion, 0)
         return f"{uncompleted}"
-
-class DepartmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = '__all__'
-
-class MunicipalitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Municipality
-        fields = '__all__'
-
-class TownshipSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Township
-        fields = '__all__'
-
-class VillageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Village
-        fields = '__all__'
-
     
 class StaffInfoSerializer(BaseImageMixin, serializers.ModelSerializer):
     url_image = BaseImageMixin.url_image
@@ -109,14 +88,18 @@ class StaffInfoSerializer(BaseImageMixin, serializers.ModelSerializer):
 class StaffSerializer(BaseImageMixin, serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     phone = serializers.CharField(source='staff.phone', read_only=True)
+    roles = serializers.SerializerMethodField()
     staff_info = StaffInfoSerializer(source='staff')
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'first_name', 'last_name', 'email', 'is_active', 'is_superuser', 'password', 'phone', 'staff_info']
+        fields = ['id', 'first_name', 'last_name', 'email', 'is_active', 'roles', 'is_superuser', 'password', 'phone', 'staff_info']
         extra_kwargs = {
             'password': {'write_only': True}
         }
+
+    def get_roles(self, obj):
+        return list(obj.roles.values_list('rol_id', flat=True))
 
     def create(self, validated_data):
         staff_data = validated_data.pop('staff', None)
@@ -136,6 +119,7 @@ class StaffSerializer(BaseImageMixin, serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         staff_data = validated_data.pop('staff', None)
+        roles = self.context['request'].data['roles'] or []
 
         if not self.context['request'].user.is_superuser:
             validated_data.pop('is_superuser', None)
@@ -156,6 +140,14 @@ class StaffSerializer(BaseImageMixin, serializers.ModelSerializer):
                 setattr(staff_instance, attr, value)
             staff_instance.save()
 
+        if isinstance(roles, list) and roles:
+            roles_actuales = instance.roles.all()    
+            roles_a_eliminar = roles_actuales.exclude(rol_id__in=roles)
+            roles_a_eliminar.delete()
+            roles_a_agregar = [rol_id for rol_id in roles if not roles_actuales.filter(rol_id=rol_id).exists()]
+            for rol_id in roles_a_agregar:
+                RolUsuario.objects.create(user=instance, rol_id=rol_id)
+
         return instance
 
 class StaffListSerializer(serializers.ModelSerializer):
@@ -165,3 +157,4 @@ class StaffListSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'is_active', 'is_superuser', 'image',]
+
