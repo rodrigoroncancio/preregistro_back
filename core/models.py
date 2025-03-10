@@ -464,7 +464,7 @@ class CatatumboIndividuales(models.Model):
         managed = False  # Evita que Django intente modificar la tabla    
         
 class CatatumboGrupo(models.Model):
-    id_internal = models.CharField(max_length=41, db_column='__id', primary_key=True)
+    id = models.CharField(max_length=41, db_column='__id', primary_key=True)
     submission_date = models.TextField(db_column='SUBMISSIONDATE', null=True, blank=True)
     updated_at = models.TextField(db_column='UPDATEDAT', null=True, blank=True)
     submitter_id = models.TextField(db_column='SUBMITTERID', null=True, blank=True)
