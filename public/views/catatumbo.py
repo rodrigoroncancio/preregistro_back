@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import  ArgeliaPersonas, ValidationArgeliaPersonas, ArgeliaPersonasValidadas
+from core.models import  ArgeliaPersonas, ArgeliaPersonasValidadas
 from core.serializers.staff import ArgeliaPersonasSerializer
-from ..models import FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormCatatumboPreinscripcionNucleosIndividuales , FormArgeliaFichaAcuerdo
+from ..models import FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
 
 from ..serializers.catatumbo_preregistro import CatatumboPreregistroSerializer
 from ..serializers.catatumbo_preinscripcionnucleo import CatatumboPreincripcionNucleoSerializer
