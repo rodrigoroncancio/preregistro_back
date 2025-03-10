@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count
 
 from public.models import FormArgeliaFichaAcuerdo
-from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems, CatatumboIndividuales
+from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer, CatatumboIndividualSerializer
 from pnis.filters import ORFilterBackend
 
 def setContext (context, formid):
@@ -149,6 +149,8 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         return setContext(context, self.kwargs.get('formid'))
+
+
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     permission_classes = []
