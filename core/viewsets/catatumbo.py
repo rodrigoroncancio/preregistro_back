@@ -1,14 +1,12 @@
 from django.db.models import Q
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework.permissions import BasePermission, IsAdminUser
-from django.contrib.auth import get_user_model
+# from rest_framework.response import Response
+# from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
+# from django.contrib.auth import get_user_model
 from django.db.models import Count
 
-from public.models import FormArgeliaFichaAcuerdo
-from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems, CatatumboIndividuales
-from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from core.models import ValidationRegister, ValidationItems, CatatumboIndividuales
 from core.serializers.catatumbo import CatatumboIndividualSerializer
 from pnis.filters import ORFilterBackend
 
@@ -51,8 +49,8 @@ class CatatumboIndividualViewSet (viewsets.ModelViewSet):
     queryset = CatatumboIndividuales.objects.all()
     filter_backends = [ORFilterBackend]
     search_fields = ['identificacion',
-        'nombre',
-        'apellido'
+        'nombres',
+        'apellidos'
     ]
 
     def get_serializer_context(self):

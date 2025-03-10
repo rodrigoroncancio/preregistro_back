@@ -1,9 +1,9 @@
-from django.utils import timezone
+# from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from pnis.mixins.baseImage import BaseImageMixin
-from core.models import CatatumboIndividuales, NucleoFamiliarPersonas, Staff, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas
-from public.models import FormArgeliaFichaAcuerdo
+# from pnis.mixins.baseImage import BaseImageMixin
+from core.models import CatatumboIndividuales
+# from public.models import FormArgeliaFichaAcuerdo
 
 class CatatumboIndividualSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
