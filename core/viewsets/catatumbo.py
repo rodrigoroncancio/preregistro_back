@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAdminUser
 # from django.contrib.auth import get_user_model
 from django.db.models import Count
 
-from core.models import ValidationRegister, ValidationItems, CatatumboIndividuales
-from core.serializers.catatumbo import CatatumboIndividualSerializer
+from core.models import ValidationRegister, ValidationItems, CatatumboIndividuales, CatatumboGrupo
+from core.serializers.catatumbo import CatatumboIndividualSerializer, CatatumboGrupoSerializer
 from pnis.filters import ORFilterBackend
 
 def setContext (context, formid):
@@ -56,3 +56,19 @@ class CatatumboIndividualViewSet (viewsets.ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         return setContext(context, self.kwargs.get('formid'))
+    
+class CatatumboGruposViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = CatatumboGrupoSerializer
+    queryset = CatatumboGrupo.objects.all()
+    filter_backends = [ORFilterBackend]
+    search_fields = ['identificacion_organizacion',
+        'grupo_productores',
+        'representante',
+        'cedula_representante'
+    ]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        return setContext(context, self.kwargs.get('formid'))    
