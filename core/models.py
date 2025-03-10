@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 class Rol(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=25)
 
     class Meta:
@@ -10,7 +10,7 @@ class Rol(models.Model):
         db_table = 'core_Rol'
 
 class RolUsuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="roles")
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
 
@@ -119,6 +119,7 @@ class Village(models.Model):
     class Meta:
         db_table = 'Village'
         managed = False
+
 class Acquisitionfarm(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
     name = models.CharField(max_length=100, db_column='Name')
@@ -126,6 +127,7 @@ class Acquisitionfarm(models.Model):
     class Meta:
         managed = False
         db_table = 'AcquisitionFarm'
+
 class Civilstatus(models.Model):
     id = models.AutoField(primary_key=True, db_column='id')
     name = models.CharField(max_length=100, db_column='name')
@@ -149,6 +151,7 @@ class Education(models.Model):
     class Meta:
         managed = False
         db_table = 'Education'
+
 class Familyrelationships(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
     titularid = models.IntegerField(null=True, db_column='TitularId')
@@ -198,9 +201,6 @@ class Subjectofspecialprotection(models.Model):
     class Meta:
         db_table = 'SubjectOfSpecialProtection'
         managed = False
-
-
-
 
 class UserPNIS(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
@@ -276,11 +276,11 @@ class UserPNIS(models.Model):
     economicactivity = models.CharField(max_length=255, null=True, blank=True, db_column='EconomicActivity')
     experienceproductionline = models.CharField(max_length=255, null=True, blank=True, db_column='ExperienceProductionLine')
     # yearsexperienceproductionline = models.IntegerField(null=True, blank=True, db_column='YearsExperienceProductionLine')
+
     class Meta:
         ordering = ('id',)
         db_table = 'Users'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
-
 
 class ArgeliaGrupos(models.Model):
     id = models.CharField(max_length=41, primary_key=True, db_column='__id')
@@ -312,7 +312,6 @@ class ArgeliaGrupos(models.Model):
         ordering = ('cub',)
         db_table = '[stg].[V_Argelia_Encuesta_Grupo]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
         managed = False  # Evita que Django intente modificar la tabla
-        
 
 class ArgeliaPersonas(models.Model):
     id = models.CharField(max_length=41, primary_key=True, db_column='id')
