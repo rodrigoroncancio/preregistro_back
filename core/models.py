@@ -404,6 +404,7 @@ class NucleoFamiliarPersonas(models.Model):
 
 class CatatumboIndividuales(models.Model):
     id = models.CharField(max_length=41, primary_key=True, db_column='__id')
+    fase = models.TextField(db_column='FASE', null=True, blank=True)
     submission_date = models.TextField(db_column='SUBMISSIONDATE', null=True, blank=True)
     updated_at = models.TextField(db_column='UPDATEDAT', null=True, blank=True)
     submitter_id = models.TextField(db_column='SUBMITTERID', null=True, blank=True)
