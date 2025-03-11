@@ -428,6 +428,7 @@ class CatatumboIndividuales(models.Model):
     identificacion_valida_inscritos = models.TextField(db_column='IDENTIFICACION VALIDA INSCRITOS', null=True, blank=True)
     victima_posterior_2025 = models.TextField(db_column='VICTIMA POSTERIOR 2025', null=True, blank=True)
     fecha = models.TextField(db_column='FECHA', null=True, blank=True)
+    fecha_nacimiento = models.TextField(db_column='FECHA NACIMIENTO', null=True, blank=True)
     tipo_linea_productiva = models.TextField(db_column='TIPO LINEA PRODUCTIVA', null=True, blank=True)
     condicion_linea_productiva = models.TextField(db_column='CONDICION LINEA PRODUCTIVA', null=True, blank=True)
     linea_productiva = models.TextField(db_column='LINEA PRODUCTIVA', null=True, blank=True)
@@ -458,7 +459,41 @@ class CatatumboIndividuales(models.Model):
     documento_valido = models.TextField(db_column='DOCUMENTO VALIDO', null=True, blank=True)
     foto_documento_frente = models.TextField(db_column='FOTO DOCUMENTO FRENTE', null=True, blank=True)
     foto_documento_respaldo = models.TextField(db_column='FOTO DOCUMENTO RESPALDO', null=True, blank=True)
-    
+    madre_cabeza_familia = models.CharField(max_length=255, db_column='MADRE CABEAZA FAMILIA', null=True, blank=True)
+    orientacion = models.CharField(max_length=255, null=True, blank=True)
+    telefono = models.CharField(max_length=255, null=True, blank=True)
+    correo = models.CharField(max_length=255, null=True, blank=True)
+    tipo_ciudadano = models.CharField(max_length=255, db_column='TIPO CIUDADANO', null=True, blank=True)
+    pueblo = models.CharField(max_length=255, null=True, blank=True)
+    etnico = models.CharField(max_length=255, null=True, blank=True)
+    nombre_comunidad = models.CharField(max_length=255, db_column='NOMBRECOMUNIDAD', null=True, blank=True)
+    censo = models.CharField(max_length=255, null=True, blank=True)
+    nombre_comunidad1 = models.CharField(max_length=255, db_column='NOMBRECOMUNIDAD1', null=True, blank=True)
+    lote_etnico = models.CharField(max_length=255, db_column='LOTEETNICO', null=True, blank=True)
+    condicion = models.CharField(max_length=255, db_column='CONDICION', null=True, blank=True)
+    discapacidad = models.CharField(max_length=255, db_column='DISCAPACIDAD', null=True, blank=True)
+    educacion = models.CharField(max_length=255, db_column='EDUCACION', null=True, blank=True)
+    numero_personas = models.CharField(max_length=255, db_column='NUMERO PERSONAS', null=True, blank=True)
+    numero_documentos_personas_nucleo = models.CharField(max_length=255, db_column='NUMERO DOCUMENTOS PERSONAS NUCLEO', null=True, blank=True)
+    nombres_documentos_personas_nucleo = models.CharField(max_length=255, db_column='NOMBRES DOCUMENTOS PERSONAS NUCLEO', null=True, blank=True)
+    numero_total_predios_inscribir = models.CharField(max_length=255, db_column='NUMERO TOTAL PREDIOS INSCRIBIR', null=True, blank=True)
+    numero_predios_inscribir = models.CharField(max_length=255, db_column='NUMERO PREDIOS INSCRIBIR', null=True, blank=True)
+    departamento = models.CharField(max_length=255, db_column='DEPARTAMENTO', null=True, blank=True)
+    municipio = models.TextField(max_length=255, db_column='MUNICIPIO', null=True, blank=True)
+    vereda = models.TextField(db_column='VEREDA', null=True, blank=True)
+    vereda_cual = models.TextField(db_column='VEREDA CUAL', null=True, blank=True)
+    predio = models.TextField(db_column='PREDIO', null=True, blank=True)
+    area_predio = models.TextField(db_column='AREA PREDIO', null=True, blank=True)
+    area_coca = models.TextField(db_column='AREA COCA', null=True, blank=True)
+    tenencia = models.TextField(db_column='TENENCIA', null=True, blank=True)
+    coordenadas = models.TextField(db_column='COORDENADAS', null=True, blank=True)
+    departamento_residencia = models.TextField(db_column='DEPARTAMENTO RESIDENCIA', null=True, blank=True)
+    municipio_residencia = models.TextField(db_column='MUNICIPIO RESIDENCIA', null=True, blank=True)
+    vereda_residencia = models.TextField(db_column='VEREDA RESIDENCIA', null=True, blank=True)
+    descripcion_acceso = models.TextField(db_column='DESCRIPCION ACCESO', null=True, blank=True)
+    predio_residencia = models.TextField(db_column='PREDIO RESIDENCIA', null=True, blank=True)
+    usufructa_predio = models.TextField(db_column='USUFRUCTUA OTRO PREDIO', null=True, blank=True)
+    actividad_econo_otro = models.TextField(db_column='ACTIVIDAD ECONOMICA OTRO PREDIO', null=True, blank=True)
         
     class Meta:
         db_table = '[stg].[Catatumbo_Individuales]'
@@ -512,6 +547,8 @@ class CatatumboGrupo(models.Model):
     fecha_creacion = models.TextField(db_column='FECHA CREACION', null=True, blank=True)
     principales_lineas_productivas = models.TextField(db_column='PRINCIPALES LINEAS PRODUCTIVAS', null=True, blank=True)
     principales_lineas_productivas_cual = models.TextField(db_column='PRINCIPALES LINEAS PRODUCTIVAS CUAL', null=True, blank=True)
+    
+    
     
     class Meta:
         db_table = '[stg].[Catatumbo_Grupo]'
