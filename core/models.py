@@ -467,6 +467,7 @@ class CatatumboGrupo(models.Model):
     id = models.CharField(max_length=41, db_column='__id', primary_key=True)
     submission_date = models.TextField(db_column='SUBMISSIONDATE', null=True, blank=True)
     updated_at = models.TextField(db_column='UPDATEDAT', null=True, blank=True)
+    fase = models.TextField(db_column='FASE', null=True, blank=True)
     submitter_id = models.TextField(db_column='SUBMITTERID', null=True, blank=True)
     submitter_name = models.TextField(db_column='SUBMITTERNAME', null=True, blank=True)
     attachments_present = models.TextField(db_column='ATTACHMENTSPRESENT', null=True, blank=True)
