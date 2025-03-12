@@ -1,11 +1,23 @@
 from django.db.models import Q
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 
-from core.models import ValidationRegister, ValidationItems, ValidationArgeliaPersonas
-from core.serializers.validation_register import ValidationRegisterSerializer, ValidationRegisterLiteSerializer, ValidationPersonasSerializer, ValidationItemsSerializer
+from core.models import ValidationRegister, ValidationItems, ValidationArgeliaPersonas, CedulasRnec
+from core.serializers.validation_register import ValidationRegisterSerializer, ValidationRegisterLiteSerializer, ValidationPersonasSerializer, ValidationItemsSerializer, CedulasRnecSerializer
+
+class CedulasRnecViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = CedulasRnecSerializer
+    queryset = CedulasRnec.objects.all()
+
+    @action(detail=False, methods=['get'], url_path='getbyidentification/(?P<ide>\d+)')
+    def get_by_identification(self, request, ide=None):
+
+        cedula = CedulasRnec.objects.get(numero_cedula=int(ide))
+        serializer = self.get_serializer(cedula)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ValidationRegisterViewSet (viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]

@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path
 
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
-from .viewsets.validation_register import ValidationRegisterViewSet
+from .viewsets.validation_register import ValidationRegisterViewSet, CedulasRnecViewSet
 from .viewsets.staff import NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .viewsets.catatumbo import CatatumboIndividualViewSet, CatatumboGruposViewSet
 from .viewsets.user import UserViewSet
@@ -20,6 +20,7 @@ router.register(r'municipalities', MunicipalityViewSet, basename='municipalities
 router.register(r'townships', TownshipViewSet, basename='townships')
 router.register(r'villages', VillageViewSet, basename='villages')
 router.register(r'validationregister', ValidationRegisterViewSet)
+router.register(r'cedulasrnec', CedulasRnecViewSet)
 
 urlpatterns = router.urls + [
     path('user/data/', UserViewSet.as_view({'get': 'user_data'}), name='get-user-data'),
@@ -28,7 +29,7 @@ urlpatterns = router.urls + [
     path('townships/by-municipality/<int:municipality_id>/', TownshipViewSet.as_view({'get': 'list'}), name='townships-by-municipality'),
     path('villages/by-township/<int:township_id>/', VillageViewSet.as_view({'get': 'list'}), name='villages-by-township'),
     
-    path('media/generatekey/', ArchivoKeyViewSet.as_view({'get': 'generar'}), name='media-generar'),
+    path('media/generatekey/', CedulasRnecViewSet.as_view({'get': 'generar'}), name='media-generar'),
     path('media/<str:key>/<int:uid>/', ArchivoViewSet.as_view({'get': 'descargar'}), name='media-descargar'),
     path('userpnis/filterbysurvey/<int:formid>/', UserPnisViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('userpnis/getnucleo/<str:documento>/', NucleoFamiliarViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
