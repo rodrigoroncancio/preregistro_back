@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 class Rol(models.Model):
     id = models.AutoField(primary_key=True)
@@ -58,6 +59,7 @@ class ValidationRegister(models.Model):
     observation = models.TextField( null=True, blank=True)
     attachment = models.TextField( null=True, blank=True)  
     document_number = models.CharField(max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)  
     
 class ValidationRegister_Logs(models.Model):
     validationregister = models.ForeignKey(ValidationRegister, on_delete=models.CASCADE, null=True, blank=True)
@@ -65,7 +67,16 @@ class ValidationRegister_Logs(models.Model):
     status = models.CharField(max_length=15, null=True, blank=True)
     observation = models.TextField( null=True, blank=True)
     attachment = models.TextField( null=True, blank=True)  
-    
+ 
+ 
+class ValidationFinalRegister(models.Model):
+    SurveyForms = models.ForeignKey(SurveyForms, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=15, null=True, blank=True)
+    observation = models.TextField( null=True, blank=True)
+    attachment = models.TextField( null=True, blank=True)  
+    document_number = models.CharField(max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)  
 
 class CedulasRnec(models.Model):    
     numero_cedula = models.IntegerField(primary_key=True, db_column='Número de cédula')
