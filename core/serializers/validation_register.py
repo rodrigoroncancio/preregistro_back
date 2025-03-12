@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from pnis.mixins.baseFile import BaseFileMixin
-from core.models import ValidationRegister, ValidationArgeliaPersonas, ValidationItems
+from core.models import ValidationRegister, ValidationArgeliaPersonas, ValidationItems, CedulasRnec
 
+
+class CedulasRnecSerializer(BaseFileMixin, serializers.ModelSerializer): 
+    class Meta:
+        model = CedulasRnec
+        fields = '__all__'
+            
 
 class ValidationRegisterSerializer(BaseFileMixin, serializers.ModelSerializer): 
     attachment = BaseFileMixin.base64_file()

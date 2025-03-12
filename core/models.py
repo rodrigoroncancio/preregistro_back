@@ -66,6 +66,27 @@ class ValidationRegister_Logs(models.Model):
     observation = models.TextField( null=True, blank=True)
     attachment = models.TextField( null=True, blank=True)  
     
+
+class CedulasRnec(models.Model):    
+    numero_cedula = models.IntegerField(primary_key=True, db_column='Número de cédula')
+    primer_nombre = models.TextField(db_column='Primer Nombre', blank=True, null=True)
+    segundo_nombre = models.TextField(db_column='Segundo Nombre', blank=True, null=True)
+    primer_apellido = models.TextField(db_column='Primer Apellido', blank=True, null=True)
+    segundo_apellido = models.TextField(db_column='Segundo Apellido', blank=True, null=True)
+    municipio_expedicion = models.TextField(db_column='Municipio de Expedición del documento', blank=True, null=True)
+    departamento_expedicion = models.TextField(db_column='Departamento de Expedición del documento', blank=True, null=True)
+    fecha_expedicion = models.TextField(db_column='Fecha de Expedición del documento', blank=True, null=True)
+    estado_cedula = models.TextField(db_column='Estado de la Cedula', blank=True, null=True)
+    numero_resolucion = models.TextField(db_column='Número de Resolución', blank=True, null=True)
+    agno_resolucion = models.TextField(db_column='Año de Resolución', blank=True, null=True)
+    genero = models.TextField(db_column='Género', blank=True, null=True)
+    fecha_nacimiento = models.TextField(db_column='Fecha de Nacimiento', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = '[report].[Cedulas_RNEC]'
+
+    
 class ValidationArgeliaPersonas(models.Model):    
     numero_documento = models.IntegerField(primary_key=True, db_column='NUMERO DOCUMENTO')
     cupo = models.IntegerField(db_column='CUPO', blank=True, null=True)
