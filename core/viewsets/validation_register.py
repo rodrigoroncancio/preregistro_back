@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 
-from core.models import ValidationRegister, ValidationItems, ValidationArgeliaPersonas, CedulasRnec
-from core.serializers.validation_register import ValidationRegisterSerializer, ValidationRegisterLiteSerializer, ValidationPersonasSerializer, ValidationItemsSerializer, CedulasRnecSerializer
+from core.models import ValidationFinalRegister, ValidationRegister, ValidationItems, ValidationArgeliaPersonas, CedulasRnec
+from core.serializers.validation_register import ValidationFinalRegisterSerializer, ValidationRegisterSerializer, ValidationRegisterLiteSerializer, ValidationPersonasSerializer, ValidationItemsSerializer, CedulasRnecSerializer
 
 class CedulasRnecViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
@@ -18,6 +18,12 @@ class CedulasRnecViewSet(viewsets.ModelViewSet):
         cedula = CedulasRnec.objects.get(numero_cedula=int(ide))
         serializer = self.get_serializer(cedula)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ValidationFinalRegisterViewSet (viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = ValidationFinalRegisterSerializer
+    queryset = ValidationFinalRegister.objects.all()   
+    
 
 class ValidationRegisterViewSet (viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]

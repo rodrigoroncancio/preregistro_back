@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path
 
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
-from .viewsets.validation_register import ValidationRegisterViewSet, CedulasRnecViewSet
+from .viewsets.validation_register import ValidationFinalRegisterViewSet, ValidationRegisterViewSet, CedulasRnecViewSet
 from .viewsets.staff import NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .viewsets.catatumbo import CatatumboIndividualViewSet, CatatumboGruposViewSet
 from .viewsets.user import UserViewSet
@@ -20,6 +20,7 @@ router.register(r'municipalities', MunicipalityViewSet, basename='municipalities
 router.register(r'townships', TownshipViewSet, basename='townships')
 router.register(r'villages', VillageViewSet, basename='villages')
 router.register(r'validationregister', ValidationRegisterViewSet)
+router.register(r'validationfinalregister', ValidationFinalRegisterViewSet)
 router.register(r'cedulasrnec', CedulasRnecViewSet)
 
 urlpatterns = router.urls + [
