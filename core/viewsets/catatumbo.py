@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAdminUser
 # from django.contrib.auth import get_user_model
 from django.db.models import Count
 
-from core.models import ValidationRegister, ValidationItems, CatatumboIndividuales, CatatumboGrupo
+from core.models import VCatatumboIndividuales, ValidationRegister, ValidationItems, CatatumboIndividuales, CatatumboGrupo
 from core.serializers.catatumbo import CatatumboIndividualSerializer, CatatumboGrupoSerializer
 from pnis.filters import ORFilterBackend
 
@@ -46,11 +46,12 @@ class CatatumboIndividualViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = CatatumboIndividualSerializer
-    queryset = CatatumboIndividuales.objects.all()
+    queryset = VCatatumboIndividuales.objects.all()
     filter_backends = [ORFilterBackend]
     search_fields = ['identificacion',
         'nombres',
-        'apellidos'
+        'apellidos',
+        'fase'
     ]
 
     def get_serializer_context(self):

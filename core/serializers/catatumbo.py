@@ -2,14 +2,14 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 # from pnis.mixins.baseImage import BaseImageMixin
-from core.models import CatatumboIndividuales, CatatumboGrupo
+from core.models import CatatumboIndividuales, CatatumboGrupo, VCatatumboIndividuales
 # from public.models import FormArgeliaFichaAcuerdo
 
 class CatatumboIndividualSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()
     number_uncompleted = serializers.SerializerMethodField()
     class Meta:
-        model = CatatumboIndividuales
+        model = VCatatumboIndividuales
         fields = '__all__'
         
     def get_number_completed(self, obj):
