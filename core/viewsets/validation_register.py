@@ -3,6 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
+from django.shortcuts import get_object_or_404
 
 from core.models import ValidationFinalRegister, ValidationRegister, ValidationItems, ValidationArgeliaPersonas, CedulasRnec
 from core.serializers.validation_register import ValidationFinalRegisterSerializer, ValidationRegisterSerializer, ValidationRegisterLiteSerializer, ValidationPersonasSerializer, ValidationItemsSerializer, CedulasRnecSerializer
@@ -29,6 +30,13 @@ class ValidationRegisterViewSet (viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = ValidationRegisterSerializer
     queryset = ValidationRegister.objects.all()
+    
+    @action(detail=True, methods=['delete'])
+    def delete_by_id(self, request, pk=None):
+        """Elimina un ValidationRegister por ID."""
+        validation = get_object_or_404(ValidationRegister, pk=pk)
+        validation.delete()
+        return Response({"message": "Registro eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'], url_path='missing-validation-items/(?P<document_number>[^/.]+)/(?P<survey_id>[^/.]+)')
     def missing_validation_items(self, request, document_number, survey_id):

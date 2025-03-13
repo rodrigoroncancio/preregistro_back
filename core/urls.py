@@ -24,6 +24,7 @@ router.register(r'validationfinalregister', ValidationFinalRegisterViewSet)
 router.register(r'cedulasrnec', CedulasRnecViewSet)
 
 urlpatterns = router.urls + [
+    path('validationregister/<int:pk>/delete/', ValidationRegisterViewSet.as_view({'delete': 'delete_by_id'}), name='validationregister-delete'),
     path('user/data/', UserViewSet.as_view({'get': 'user_data'}), name='get-user-data'),
     path('user/roles/', UserViewSet.as_view({'get': 'roles'}), name='get-user-roles'),
     path('municipalities/by-department/<int:department_id>/', MunicipalityViewSet.as_view({'get': 'list'}), name='municipalities-by-department'),
