@@ -1,9 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import  ArgeliaPersonas, ArgeliaPersonasValidadas
+from core.models import  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
-from ..models import FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
+from core.serializers.catatumbo import CatatumboIndividualSerializer
+from ..models import FormCatatumbosFichaAcuerdo, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
 
 from ..serializers.catatumbo_preregistro import CatatumboPreregistroSerializer
 from ..serializers.catatumbo_preinscripcionnucleo import CatatumboPreincripcionNucleoSerializer
@@ -12,6 +13,7 @@ from ..serializers.catatumbo_preinscripciongrupoproductores import CatatumboPrei
 from ..serializers.catatumbo_preinscripcionnucleosindividuales import CatatumboPreincripcionNucleosIndividualesSerializer
 from ..serializers.catatumbo_preinscripcionfamiliaspnis import CatatumboPreincripcionFamiliasPnisSerializer
 from ..serializers.argelia_fichaacuerdo import ArgeliaFichaAcuerdoSerializer, FormArgeliaFichaAcuerdoNucleoFamiliarSerializer
+from ..serializers.catatumbo_fichaacuerdo import CatatumboFichaAcuerdoSerializer, FormCatatumboFichaAcuerdoNucleoFamiliarSerializer
 
 class CatatumboPreregistroView(APIView):
 
@@ -62,6 +64,73 @@ class CatatumboValidaDocumentoView(APIView):
             return Response(True, status=status.HTTP_200_OK)
 
         return Response(False, status=status.HTTP_200_OK)
+    
+class CatatumboFichaValidaDocumentoView(APIView):
+    permission_classes = []
+    def get(self, request):
+        documento = request.query_params.get('documento')
+        
+        if FormCatatumbosFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
+            return Response(
+            {
+                "status": 2,
+                "data": {}
+            },
+            status=status.HTTP_200_OK
+        ) 
+
+        if CatatumboPersonasValidadas.objects.filter(numero_identificacion=documento).exists():
+        # Buscar si el documento existe
+            registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
+
+            if registro:
+                # Serializar el registro encontrado
+                serializer = CatatumboIndividualSerializer(registro)
+                return Response(
+                    {
+                        "status": 1,
+                        "data": serializer.data
+                    },
+                    status=status.HTTP_200_OK
+                )
+                # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+            return Response(
+                {
+                    "status": 3,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )   
+
+        # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+        registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
+        if registro:
+            return Response(
+            {
+                "status": 4,
+                "data": {}
+            },
+            status=status.HTTP_200_OK
+        )  
+        else :
+            return Response(
+            {
+                "status": 3,
+                "data": {}
+            },
+            status=status.HTTP_200_OK)
+            
+class CatatumboFichaAcuerdoNucleoView(APIView):
+    permission_classes = []
+    def post(self, request, *args, **kwargs):
+        # Pasamos los datos correctamente con el argumento `data=`
+        serializer = FormCatatumboFichaAcuerdoNucleoFamiliarSerializer(data=request.data, many=True)
+
+        if serializer.is_valid():
+            personas = serializer.save()
+            return Response({"message": "Personas creadas correctamente", "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
     
 class ArgeliaFichaValidaDocumentoView(APIView):
     permission_classes = []
@@ -166,3 +235,12 @@ class ArgeliaFichaAcuerdoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class CatatumboFichaAcuerdoView(APIView):
+    permission_classes = []
+    def post(self, request):
+        serializer = CatatumboFichaAcuerdoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
