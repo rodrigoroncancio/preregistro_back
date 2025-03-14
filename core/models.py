@@ -420,6 +420,15 @@ class ArgeliaPersonasValidadas(models.Model):
         db_table = '[report].[V_Argelia_Personas_Validas]'
         managed = False  # Evita que Django intente modificar la tabla     
         
+class CatatumboPersonasValidadas(models.Model):
+    numero_identificacion = models.TextField(db_column='NUMERO DOCUMENTO', null=True, blank=True)
+    nombres = models.TextField(db_column='NOMBRES', null=True, blank=True)
+    apellidos = models.TextField(db_column='APELLIDOS', null=True, blank=True)
+        
+    class Meta:
+        db_table = '[report].[V_Catatumbo_Personas_Validas]'
+        managed = False  # Evita que Django intente modificar la tabla  
+        
 class NucleoFamiliarPersonas(models.Model):
     titular_identificacion = models.TextField(db_column='titular_identificacion', null=True, blank=True)
     beneficiario_identificationNumber = models.TextField(db_column='beneficiario_identificationnumber', null=True, blank=True)
