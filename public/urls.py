@@ -9,6 +9,7 @@ router = routers.SimpleRouter()
 urlpatterns = [
     path('forms/catatumbo/validar_documento/', CatatumboValidaDocumentoView.as_view(), name='catatumbo-valida-documento'),
     path('forms/catatumbo/ficha/validar_documento/', CatatumboFichaValidaDocumentoView.as_view(), name='catatumbo-ficha-valida-documento'),
+    path('forms/catatumbo/ficha/validar_nucleo/', CatatumboFichaValidaNucleoView.as_view(), name='catatumbo-ficha-valida-nucleo'),
     path('forms/argelia/ficha/validar_documento/', ArgeliaFichaValidaDocumentoView.as_view(), name='argelia-ficha-valida-documento'),
     path('forms/catatumbo/preregistro/', CatatumboPreregistroView.as_view(), name='catatumbo-preregistro'),
     path('forms/catatumbo/preinscripcionnucleo/', CatatumboPreinscripcionNucleoView.as_view(), name='catatumbo-preinscripcionnucleo'),
