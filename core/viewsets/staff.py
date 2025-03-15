@@ -6,9 +6,9 @@ from rest_framework.permissions import BasePermission, IsAdminUser
 from django.contrib.auth import get_user_model
 from django.db.models import Count
 
-from public.models import FormArgeliaFichaAcuerdo
-from core.models import NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from public.models import FormArgeliaFichaAcuerdo, FormCatatumbosFichaAcuerdo
+from core.models import  NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
+from core.serializers.staff import CatatumboFichaAcuerdoSerializer, NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
 from core.serializers.list import DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
 from pnis.filters import ORFilterBackend
 
@@ -134,6 +134,17 @@ class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
         'nombre',
         'numero_identificacion'
     ]
+    
+class CatatumboFichaAcuerdoViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = CatatumboFichaAcuerdoSerializer
+    queryset = FormCatatumbosFichaAcuerdo.objects.all()
+    filter_backends = [ORFilterBackend]
+    search_fields = ['numero_identificacion',
+        'nombre',
+        'numero_identificacion'
+    ]    
 
 
 class ArgeliaPersonasViewSet (viewsets.ModelViewSet):

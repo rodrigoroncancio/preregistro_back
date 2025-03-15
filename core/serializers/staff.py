@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from pnis.mixins.baseImage import BaseImageMixin
 from core.models import NucleoFamiliarPersonas, Staff, RolUsuario, UserPNIS, ArgeliaGrupos, ArgeliaPersonas
-from public.models import FormArgeliaFichaAcuerdo
+from public.models import FormArgeliaFichaAcuerdo, FormCatatumbosFichaAcuerdo
 
 class NucleoFamiliarSerializer(serializers.ModelSerializer):
 
@@ -57,6 +57,11 @@ class FichaAcuerdoFase2Serializer(serializers.ModelSerializer):
     class Meta:
         model = FormArgeliaFichaAcuerdo
         fields = '__all__'
+        
+class CatatumboFichaAcuerdoSerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = FormCatatumbosFichaAcuerdo
+        fields = '__all__'        
         
 class ArgeliaPersonasSerializer(serializers.ModelSerializer):
     number_completed = serializers.SerializerMethodField()

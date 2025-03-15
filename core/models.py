@@ -233,6 +233,16 @@ class Subjectofspecialprotection(models.Model):
     class Meta:
         db_table = 'SubjectOfSpecialProtection'
         managed = False
+        
+class PersonaPnis(models.Model):
+    identificacion = models.CharField(max_length=100, null=False, db_column='Identificacion')
+    nombre = models.CharField(max_length=100, null=False, db_column='Nombre')
+    apellido = models.CharField(max_length=100, null=False, db_column='Apellido')
+
+    class Meta:
+        db_table = 'Persona_PROD'
+        managed = False
+        
 
 class UserPNIS(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')

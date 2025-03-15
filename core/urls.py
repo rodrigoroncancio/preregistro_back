@@ -3,7 +3,7 @@ from django.urls import path
 
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
 from .viewsets.validation_register import ValidationFinalRegisterViewSet, ValidationRegisterViewSet, CedulasRnecViewSet
-from .viewsets.staff import NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
+from .viewsets.staff import CatatumboFichaAcuerdoViewSet, NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .viewsets.catatumbo import CatatumboIndividualViewSet, CatatumboGruposViewSet
 from .viewsets.user import UserViewSet
 
@@ -15,6 +15,7 @@ router.register(r'argeliapersonas', ArgeliaPersonasViewSet, basename='argeliaper
 router.register(r'catatumboindividual', CatatumboIndividualViewSet, basename='catatumboindividual')
 router.register(r'catatumbogrupos', CatatumboGruposViewSet, basename='catatumbogrupos')
 router.register(r'fichaacuerdofase2', FichaAcuerdoFase2ViewSet, basename='fichaacuerdofase2')
+router.register(r'catatumbofichaacuerdo', CatatumboFichaAcuerdoViewSet, basename='catatumbofichaacuerdo')
 router.register(r'departments', DepartmentViewSet, basename='departments')
 router.register(r'municipalities', MunicipalityViewSet, basename='municipalities')
 router.register(r'townships', TownshipViewSet, basename='townships')

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
+from core.models import PersonaPnis,  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
 from core.serializers.catatumbo import CatatumboIndividualSerializer
 from ..models import FormCatatumbosFichaAcuerdo, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
@@ -69,56 +69,102 @@ class CatatumboFichaValidaDocumentoView(APIView):
     permission_classes = []
     def get(self, request):
         documento = request.query_params.get('documento')
-        
-        if FormCatatumbosFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
-            return Response(
-            {
-                "status": 2,
-                "data": {}
-            },
-            status=status.HTTP_200_OK
-        ) 
+        if not(PersonaPnis.objects.filter(identificacion=int(documento)).exists()):
+            if FormCatatumbosFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
+                return Response(
+                {
+                    "status": 2,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            ) 
 
-        if CatatumboPersonasValidadas.objects.filter(numero_identificacion=documento).exists():
-        # Buscar si el documento existe
-            registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
+            if CatatumboPersonasValidadas.objects.filter(numero_identificacion=documento).exists():
+            # Buscar si el documento existe
+                registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
 
-            if registro:
-                # Serializar el registro encontrado
-                serializer = CatatumboIndividualSerializer(registro)
+                if registro:
+                    # Serializar el registro encontrado
+                    serializer = CatatumboIndividualSerializer(registro)
+                    return Response(
+                        {
+                            "status": 1,
+                            "data": serializer.data
+                        },
+                        status=status.HTTP_200_OK
+                    )
+                    # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
                 return Response(
                     {
-                        "status": 1,
-                        "data": serializer.data
+                        "status": 3,
+                        "data": {}
                     },
                     status=status.HTTP_200_OK
-                )
-                # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+                )   
+
+            # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
+            registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
+            if registro:
+                return Response(
+                {
+                    "status": 4,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )  
+            else :
+                return Response(
+                {
+                    "status": 3,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK)
+        else:
             return Response(
+                {
+                    "status": 5,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )  
+            
+class CatatumboFichaValidaNucleoView(APIView):
+    permission_classes = []
+    def get(self, request):
+        documento = request.query_params.get('documento')
+        if not(PersonaPnis.objects.filter(identificacion=int(documento)).exists()):
+            if FormCatatumbosFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
+                return Response(
+                {
+                    "status": 2,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+                ) 
+            if CatatumboPersonasValidadas.objects.filter(numero_identificacion=documento).exists():
+                return Response(
                 {
                     "status": 3,
                     "data": {}
                 },
                 status=status.HTTP_200_OK
-            )   
-
-        # Si no existe, devolver estructura estándar con `success: false` y `data: {}`
-        registro = VCatatumboIndividuales.objects.filter(identificacion=documento).first()
-        if registro:
+                ) 
+            else:
+                return Response(
+                {
+                    "status": 1,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+                ) 
+        else:
             return Response(
-            {
-                "status": 4,
-                "data": {}
-            },
-            status=status.HTTP_200_OK
-        )  
-        else :
-            return Response(
-            {
-                "status": 3,
-                "data": {}
-            },
-            status=status.HTTP_200_OK)
+                {
+                    "status": 4,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )  
             
 class CatatumboFichaAcuerdoNucleoView(APIView):
     permission_classes = []
