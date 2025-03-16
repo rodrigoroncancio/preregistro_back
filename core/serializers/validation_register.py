@@ -36,15 +36,25 @@ class ValidationFinalRegisterSerializer(BaseFileMixin, serializers.ModelSerializ
         
     def get_user_name(self, obj):
         return obj.user.first_name + ' ' + obj.user.last_name    
+
+class ValidationItemsSerializer(serializers.ModelSerializer):
+    rolname = serializers.CharField(source='rol.nombre')
+    class Meta:
+        model = ValidationItems
+        fields = ['id', 'name', 'survey', 'rol', 'rolname']    
     
 class ValidationRegisterLiteSerializer(serializers.ModelSerializer): 
     user_name = serializers.SerializerMethodField()
+    validationitems_name = serializers.SerializerMethodField() 
     class Meta:
         model = ValidationRegister
-        fields = ['id', 'user_name', 'status', 'observation', 'attachment', 'validationitems_id']
+        fields = ['id', 'user_name', 'status', 'observation', 'attachment', 'validationitems_id', 'validationitems_name']
         
     def get_user_name(self, obj):
         return obj.user.first_name + ' ' + obj.user.last_name
+    
+    def get_validationitems_name(self, obj):
+        return obj.validationitems.name if obj.validationitems else None 
 
 class ValidationPersonasSerializer(serializers.ModelSerializer):
 
@@ -52,8 +62,3 @@ class ValidationPersonasSerializer(serializers.ModelSerializer):
         model = ValidationArgeliaPersonas
         fields = '__all__'
 
-class ValidationItemsSerializer(serializers.ModelSerializer):
-    rolname = serializers.CharField(source='rol.nombre')
-    class Meta:
-        model = ValidationItems
-        fields = ['id', 'name', 'survey', 'rol', 'rolname']

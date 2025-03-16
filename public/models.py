@@ -584,7 +584,9 @@ class FormCatatumbosFichaAcuerdo(models.Model):
     predio_mismo_residencia = models.CharField(max_length=10, blank=True, null=True)
     num_dependientes = models.IntegerField(blank=True, null=True)
     caracterizacion_productiva = models.TextField(blank=True, null=True)
-    
+    desplazado_nuevo_predio = models.CharField(max_length=20, blank=True, null=True)
+    desplazado_departamento = models.CharField(max_length=20, blank=True, null=True)
+    desplazado_municipio = models.CharField(max_length=20, blank=True, null=True)
     numero_predios_uso_ilicito = models.CharField(max_length=255, blank=True, null=True)
     
     predio1_departamento = models.CharField(max_length=255, blank=True, null=True)
