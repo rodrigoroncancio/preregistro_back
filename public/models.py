@@ -243,7 +243,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     predio1_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio1_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio1_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio1_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio1_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio1_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio1_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
@@ -272,7 +272,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     predio2_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio2_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio2_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio2_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio2_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio2_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio2_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
@@ -301,7 +301,7 @@ class FormArgeliaFichaAcuerdo(models.Model):
     predio3_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio3_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio3_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio3_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio3_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio3_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio3_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
@@ -616,7 +616,7 @@ class FormCatatumbosFichaAcuerdo(models.Model):
     predio1_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio1_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio1_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio1_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio1_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio1_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio1_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
@@ -646,7 +646,7 @@ class FormCatatumbosFichaAcuerdo(models.Model):
     predio2_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio2_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio2_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio2_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio2_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio2_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio2_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
@@ -676,7 +676,7 @@ class FormCatatumbosFichaAcuerdo(models.Model):
     predio3_area_productiva = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     predio3_actividades_licitas_tiene = models.CharField(max_length=10, blank=True, null=True)
     predio3_actividades_licitas_lista = models.CharField(max_length=500, blank=True, null=True)
-    predio3_actividades_licitas_lista_otra = models.CharField(max_length=10, blank=True, null=True)
+    predio3_actividades_licitas_lista_otra = models.CharField(max_length=50, blank=True, null=True)
     predio3_nucleo_unico_usufructa= models.CharField(max_length=10, blank=True, null=True)
     predio3_num_familias_usufructa= models.IntegerField(blank=True, null=True)
     
