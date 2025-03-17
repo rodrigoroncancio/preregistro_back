@@ -4,7 +4,7 @@ from rest_framework import status
 from core.models import PersonaPnis,  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
 from core.serializers.catatumbo import CatatumboIndividualSerializer
-from ..models import FormCatatumbosFichaAcuerdo, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
+from ..models import FormCatatumbosFichaAcuerdo,FormCatatumnoFichaAcuerdoNucleoFamiliar, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
 
 from ..serializers.catatumbo_preregistro import CatatumboPreregistroSerializer
 from ..serializers.catatumbo_preinscripcionnucleo import CatatumboPreincripcionNucleoSerializer
@@ -133,6 +133,16 @@ class CatatumboFichaValidaNucleoView(APIView):
     def get(self, request):
         documento = request.query_params.get('documento')
         if not(PersonaPnis.objects.filter(identificacion=int(documento)).exists()):
+            
+            if FormCatatumnoFichaAcuerdoNucleoFamiliar.objects.filter(numero_identificacion=documento).exists():
+                return Response(
+                {
+                    "status": 5,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+                )
+            
             if FormCatatumbosFichaAcuerdo.objects.filter(numero_identificacion=documento).exists():
                 return Response(
                 {
