@@ -6,7 +6,8 @@ from rest_framework.permissions import BasePermission, IsAdminUser
 from django.contrib.auth import get_user_model
 from django.db.models import Count
 
-from public.models import FormArgeliaFichaAcuerdo, FormCatatumbosFichaAcuerdo
+from public.serializers.catatumbo_fichaacuerdo import FormCatatumboFichaAcuerdoNucleoFamiliarSerializer
+from public.models import FormArgeliaFichaAcuerdo, FormCatatumbosFichaAcuerdo, FormCatatumnoFichaAcuerdoNucleoFamiliar
 from core.models import  NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
 from core.serializers.staff import CatatumboFichaAcuerdoSerializer, NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
 from core.serializers.list import DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
@@ -145,6 +146,21 @@ class CatatumboFichaAcuerdoViewSet (viewsets.ModelViewSet):
         'nombre',
         'numero_identificacion'
     ]    
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        return setContext(context, self.kwargs.get('formid'))
+
+class CatatumboFichaAcuerdoNucleoViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = FormCatatumboFichaAcuerdoNucleoFamiliarSerializer
+    queryset = FormCatatumnoFichaAcuerdoNucleoFamiliar.objects.all()
+    filter_backends = [ORFilterBackend]
+    
+    def get_queryset(self):
+        fichaid = self.kwargs.get('fichaid')  # Obtener el parámetro de la URL
+        return FormCatatumnoFichaAcuerdoNucleoFamiliar.objects.filter(ficha=fichaid) 
 
 
 class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
