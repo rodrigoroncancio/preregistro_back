@@ -3,7 +3,7 @@ from django.urls import path
 
 from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
 from .viewsets.validation_register import ValidationFinalRegisterViewSet, ValidationRegisterViewSet, CedulasRnecViewSet
-from .viewsets.staff import CatatumboFichaAcuerdoViewSet, NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
+from .viewsets.staff import CatatumboFichaAcuerdoViewSet, CatatumboFichaAcuerdoNucleoViewSet, NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .viewsets.catatumbo import CatatumboIndividualViewSet, CatatumboGruposViewSet
 from .viewsets.user import UserViewSet
 
@@ -40,6 +40,8 @@ urlpatterns = router.urls + [
     path('argeliapersonas/filterbysurvey/<int:formid>/', ArgeliaPersonasViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
     path('catatumboindividual/filterbysurvey/<int:formid>/', CatatumboIndividualViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
     path('catatumbogrupos/filterbysurvey/<int:formid>/', CatatumboGruposViewSet.as_view({'get': 'list'}), name='argeliapersonas-filterbysurvey'),
+    path('catatumbofichaacuerdo/filterbysurvey/<int:formid>/', CatatumboFichaAcuerdoViewSet.as_view({'get': 'list'}), name='catatumboficha-filterbysurvey'),
+    path('catatumbofichaacuerdo/getnucleo/<int:fichaid>/', CatatumboFichaAcuerdoNucleoViewSet.as_view({'get': 'list'}), name='catatumboficha-filterbysurvey'),
     # path('validationregister/missing-validation-items/<str:document_number>/<int:survey_id>/', ValidationRegisterViewSet.as_view({'get': 'missing_validation_items'}), name='missing-validation-items'),
     # path('validationregister/filterbydocumentnumber/<str:document_number>/<int:survey_id>/<str:status>/', ValidationRegisterViewSet.as_view({'get': 'filterbydocumentnumber'}), name='filterbydocumentnumber'),
     # path('user-pnis/data/<int:pnis_id>/', UserPnisAPIView.as_view(), name='user-pnis-detail'),  # Registro específico
