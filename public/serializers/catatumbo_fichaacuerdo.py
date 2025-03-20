@@ -41,6 +41,13 @@ class FormCatatumboFichaAcuerdoNucleoFamiliarSerializer(serializers.ModelSeriali
     class Meta:
         model = FormCatatumnoFichaAcuerdoNucleoFamiliar
         fields = '__all__'  # Serializa todos los campos
+        
+class FormCatatumboFichaAcuerdoNucleoFamiliarLeerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FormCatatumnoFichaAcuerdoNucleoFamiliar
+        fields = '__all__'  # Serializa todos los campos
+        
 
 
         
