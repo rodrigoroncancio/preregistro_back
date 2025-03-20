@@ -260,7 +260,7 @@ class UserPNIS(models.Model):
     # village = models.ForeignKey('Village', on_delete=models.SET_NULL, null=True, blank=True, db_column='VillageId')
     email = models.EmailField(max_length=255, null=True, blank=True, db_column='Email')
     civilstatusid = models.ForeignKey('CivilStatus', on_delete=models.SET_NULL, null=True, blank=True, db_column='CivilStatusId')
-    # headofhousehold = models.BooleanField(default=False, db_column='HeadOfHousehold')
+    headofhousehold = models.BooleanField(default=False, db_column='HeadOfHousehold')
     motherheadoffamily = models.BooleanField(default=False, db_column='MotherHeadOfFamily')
     conditionid = models.ForeignKey('Condition', on_delete=models.SET_NULL, null=True, blank=True, db_column='ConditionId')
     occupationid = models.ForeignKey('Occupation', on_delete=models.SET_NULL, null=True, blank=True, db_column='OccupationId')
