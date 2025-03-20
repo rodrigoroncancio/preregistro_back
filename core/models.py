@@ -266,7 +266,7 @@ class UserPNIS(models.Model):
     occupationid = models.ForeignKey('Occupation', on_delete=models.SET_NULL, null=True, blank=True, db_column='OccupationId')
     educationid = models.ForeignKey('Education', on_delete=models.SET_NULL, null=True, blank=True, db_column='EducationId')
     healthaffiliationtypeid = models.ForeignKey('HealthAffiliationType', on_delete=models.SET_NULL, null=True, blank=True, db_column='HealthAffiliationTypeId')
-    subjectofspecialprotectionid = models.ForeignKey('Subjectofspecialprotection', on_delete=models.SET_NULL, null=True, blank=True, db_column='SubjectOfSpecialProtectionId')
+    #subjectofspecialprotectionid = models.ForeignKey('Subjectofspecialprotection', on_delete=models.SET_NULL, null=True, blank=True, db_column='SubjectOfSpecialProtectionId')
     etniaid = models.IntegerField(null=True, blank=True, db_column='EtniaId')
     communitylocation = models.CharField(max_length=255, null=True, blank=True, db_column='CommunityLocation')
     communityname = models.CharField(max_length=255, null=True, blank=True, db_column='CommunityName')
