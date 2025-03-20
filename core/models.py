@@ -309,7 +309,7 @@ class UserPNIS(models.Model):
     LegalActivitiesid = models.IntegerField(null=True, blank=True, db_column='LegalActivitiesId')
     familyexclusiveusage = models.BooleanField(default=False, db_column='FamilyExclusiveUsage')
     familyotherlands = models.BooleanField(default=False, db_column='FamilyOtherLands')
-    productiveline = models.ForeignKey('ProductiveLine', on_delete=models.SET_NULL, null=True, blank=True, db_column='ProductiveLineId')
+    # productiveline = models.ForeignKey('ProductiveLine', on_delete=models.SET_NULL, null=True, blank=True, db_column='ProductiveLineId')
     establishment = models.CharField(max_length=255, null=True, blank=True, db_column='Establishment')
     strengthening = models.CharField(max_length=255, null=True, blank=True, db_column='Strengthening')
     signature = models.TextField(null=True, blank=True, db_column='Signature')
