@@ -306,7 +306,7 @@ class UserPNIS(models.Model):
     landownername = models.CharField(max_length=255, null=True, blank=True, db_column='LandOwnerName')
     # residentsonland = models.PositiveIntegerField(null=True, blank=True, db_column='ResidentsOnLand')
     haslegalactivities = models.BooleanField(default=False, db_column='HasLegalActivities')
-    LegalActivitiesid = models.IntegerField(null=True, blank=True, db_column='LegalActivitiesId')
+    # LegalActivitiesid = models.IntegerField(null=True, blank=True, db_column='LegalActivitiesId')
     familyexclusiveusage = models.BooleanField(default=False, db_column='FamilyExclusiveUsage')
     familyotherlands = models.BooleanField(default=False, db_column='FamilyOtherLands')
     # productiveline = models.ForeignKey('ProductiveLine', on_delete=models.SET_NULL, null=True, blank=True, db_column='ProductiveLineId')
