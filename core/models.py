@@ -253,7 +253,7 @@ class UserPNIS(models.Model):
     gender = models.CharField(max_length=50, null=True, blank=True, db_column='Gender')
     sexualorientation = models.CharField(max_length=50, null=True, blank=True, db_column='SexualOrientation')
     # howtogetfarm = models.TextField(null=True, blank=True, db_column='HowToGetFarm')
-    # areacoca = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, db_column='AreaCoca')
+    areacoca = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, db_column='AreaCoca')
     # latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, db_column='Latitude')
     # longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, db_column='Longitude')
     # altitude = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True, db_column='Altitude')
