@@ -18,7 +18,7 @@ class CedulasRnecViewSet(viewsets.ModelViewSet):
         try:
             cedula = CedulasRnec.objects.filter(numero_cedula=int(ide)).first()
         except:
-            cedula = None
+            return Response({})
         serializer = self.get_serializer(cedula)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
