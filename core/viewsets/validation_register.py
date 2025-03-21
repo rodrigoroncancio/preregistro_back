@@ -16,7 +16,7 @@ class CedulasRnecViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='getbyidentification/(?P<ide>\d+)')
     def get_by_identification(self, request, ide=None):
 
-        cedula = CedulasRnec.objects.get(numero_cedula=int(ide))
+        cedula = CedulasRnec.objects.filter(numero_cedula=int(ide)).first()
         serializer = self.get_serializer(cedula)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
