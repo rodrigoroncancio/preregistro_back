@@ -1,7 +1,7 @@
 from rest_framework import routers
 from django.urls import path
 
-from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet
+from .viewsets.archivo import ArchivoKeyViewSet, ArchivoViewSet, ArchivoBase64ViewSet
 from .viewsets.validation_register import ValidationFinalRegisterViewSet, ValidationRegisterViewSet, CedulasRnecViewSet
 from .viewsets.staff import CatatumboFichaAcuerdoViewSet, CatatumboFichaAcuerdoNucleoViewSet, NucleoFamiliarViewSet, StaffViewSet, FichaAcuerdoFase2ViewSet, FichaAcuerdoFase2NucleoViewSet,  UserPnisViewSet, ArgeliaGruposViewSet, ArgeliaPersonasViewSet, DepartmentViewSet, MunicipalityViewSet, TownshipViewSet, VillageViewSet
 from .viewsets.catatumbo import CatatumboIndividualViewSet, CatatumboGruposViewSet
@@ -34,6 +34,7 @@ urlpatterns = router.urls + [
     
     path('media/generatekey/', ArchivoKeyViewSet.as_view({'get': 'generar'}), name='media-generar'),
     path('media/<str:key>/<int:uid>/', ArchivoViewSet.as_view({'get': 'descargar'}), name='media-descargar'),
+    path('mediabase64/<str:key>/<int:uid>/', ArchivoBase64ViewSet.as_view({'get': 'descargar'}), name='media-descargar'),
     path('userpnis/filterbysurvey/<int:formid>/', UserPnisViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('userpnis/getnucleo/<str:documento>/', NucleoFamiliarViewSet.as_view({'get': 'list'}), name='userpnis-filterbysurvey'),
     path('argeliagrupos/filterbysurvey/<int:formid>/', ArgeliaGruposViewSet.as_view({'get': 'list'}), name='argeliagrupos-filterbysurvey'),

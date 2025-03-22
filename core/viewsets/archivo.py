@@ -7,6 +7,8 @@ from core.azure import descargar_archivo
 import hashlib
 import filetype
 import os
+from django.http import JsonResponse
+import base64
 
 class ArchivoKeyViewSet(viewsets.GenericViewSet):
  
@@ -54,4 +56,50 @@ class ArchivoViewSet(viewsets.GenericViewSet):
             response = HttpResponse(contenido, content_type=content_type)
             response['Content-Disposition'] = f'attachment; filename={nombre_archivo}'
             return response
+        
+class ArchivoBase64ViewSet(viewsets.GenericViewSet):
+    permission_classes = []
+
+    def descargar(self, request, *args, **kwargs):
+        key = kwargs.pop('key', None)
+        uid = kwargs.pop('uid', 0)
+
+        if not key or not uid:
+            return Response({"error": "Petición incorrecta"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_user_model().objects.filter(id=uid).first()
+        priv_key = settings.SECRET_KEY
+
+        if user is None or not priv_key:
+            return Response({"error": "Petición con datos errados"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verificación del hash
+        hash_md5 = hashlib.md5(f'{user.username}:{priv_key}'.encode('utf-8')).hexdigest()
+        if hash_md5 != key:
+            return Response({"error": "Clave incorrecta"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        ruta = request.GET.get('ruta', '')
+        if ruta:
+            ruta_sin_extension, extension = os.path.splitext(ruta)
+            if extension.lower() in [".heif", ".heic"]:
+                ruta = ruta_sin_extension + ".jpg"
+
+            contenido = descargar_archivo(ruta)  # Esta función debe devolver los bytes del archivo
+            if contenido is None:
+                return Response({"error": "No se pudo descargar el archivo o no existe"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Detectar el tipo de archivo
+            kind = filetype.guess(contenido)
+            content_type = kind.mime if kind else 'application/octet-stream'
+
+            # Convertir a Base64
+            base64_str = base64.b64encode(contenido).decode('utf-8')
+
+            return JsonResponse({
+                "nombre_archivo": os.path.basename(ruta),
+                "mime_type": content_type,
+                "base64": base64_str
+            })
+
+        return Response({"error": "Ruta no especificada"}, status=status.HTTP_400_BAD_REQUEST)        
    
