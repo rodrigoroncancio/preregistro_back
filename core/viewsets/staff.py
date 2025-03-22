@@ -7,9 +7,9 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count
 
 from public.serializers.catatumbo_fichaacuerdo import FormCatatumboFichaAcuerdoNucleoFamiliarLeerSerializer, FormCatatumboFichaAcuerdoNucleoFamiliarSerializer
-from public.models import FormArgeliaFichaAcuerdo, FormCatatumbosFichaAcuerdo, FormCatatumnoFichaAcuerdoNucleoFamiliar
+from public.models import FormArgeliaFichaAcuerdo, FormArgeliaFichaAcuerdoNucleoFamiliar, FormCatatumbosFichaAcuerdo, FormCatatumnoFichaAcuerdoNucleoFamiliar
 from core.models import  NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
-from core.serializers.staff import CatatumboFichaAcuerdoSerializer, NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer
+from core.serializers.staff import CatatumboFichaAcuerdoSerializer, NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer, FormFichaAcuerdoFase2NucleoFamiliarSerializer
 from core.serializers.list import DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
 from pnis.filters import ORFilterBackend
 
@@ -135,6 +135,18 @@ class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
         'nombre',
         'numero_identificacion'
     ]
+    
+class FichaAcuerdoFase2NucleoViewSet (viewsets.ModelViewSet):
+
+    permission_classes = [IsAdminUser]
+    serializer_class = FormFichaAcuerdoFase2NucleoFamiliarSerializer
+    queryset = FormArgeliaFichaAcuerdoNucleoFamiliar.objects.all()
+    filter_backends = [ORFilterBackend]
+    
+    def get_queryset(self):
+        fichaid = self.kwargs.get('fichaid')  # Obtener el parámetro de la URL
+        return FormArgeliaFichaAcuerdoNucleoFamiliar.objects.filter(ficha=fichaid) 
+    
     
 class CatatumboFichaAcuerdoViewSet (viewsets.ModelViewSet):
 
