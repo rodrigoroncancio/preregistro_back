@@ -112,6 +112,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get("DB_NAME",'fixtoolstools'),
+#         'USER': os.environ.get("DB_USER",'postgres'),
+#         'PASSWORD': os.environ.get("DB_PASSWORD", "12345"),
+#         'HOST': os.environ.get("DB_HOST",'51.222.38.166'),
+#         'PORT': os.environ.get("DB_PORT",45432)
+#     }
+# }
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Password validation

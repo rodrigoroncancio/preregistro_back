@@ -8,7 +8,7 @@ from django.db.models import Count
 
 from public.serializers.catatumbo_fichaacuerdo import FormCatatumboFichaAcuerdoNucleoFamiliarLeerSerializer, FormCatatumboFichaAcuerdoNucleoFamiliarSerializer
 from public.models import FormArgeliaFichaAcuerdo, FormArgeliaFichaAcuerdoNucleoFamiliar, FormCatatumbosFichaAcuerdo, FormCatatumnoFichaAcuerdoNucleoFamiliar
-from core.models import  NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, ValidationRegister, ValidationItems
+from core.models import  NucleoFamiliarPersonas, UserPNIS, Department, Municipality, Township, Village, ArgeliaGrupos, ArgeliaPersonas, VArgeliaIndividual, ValidationRegister, ValidationItems
 from core.serializers.staff import CatatumboFichaAcuerdoSerializer, NucleoFamiliarSerializer, StaffSerializer, StaffListSerializer, UserPNISSerializer, ArgeliaGruposSerializer, ArgeliaPersonasSerializer, FichaAcuerdoFase2Serializer, FormFichaAcuerdoFase2NucleoFamiliarSerializer
 from core.serializers.list import DepartmentSerializer, MunicipalitySerializer, TownshipSerializer, VillageSerializer
 from pnis.filters import ORFilterBackend
@@ -184,7 +184,7 @@ class ArgeliaPersonasViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
     serializer_class = ArgeliaPersonasSerializer
-    queryset = ArgeliaPersonas.objects.all()
+    queryset = VArgeliaIndividual.objects.all()
     filter_backends = [ORFilterBackend]
     search_fields = ['identificacion',
         'nombres',
