@@ -7,6 +7,7 @@ router = routers.SimpleRouter()
 #router.register(r'customer', CustomerViewSet, basename='customer')
 
 urlpatterns = [
+    path('public/consultar_documento/', ConsultarDocumentoView.as_view(), name='consultar-documento'),
     path('forms/catatumbo/validar_documento/', CatatumboValidaDocumentoView.as_view(), name='catatumbo-valida-documento'),
     path('forms/catatumbo/ficha/validar_documento/', CatatumboFichaValidaDocumentoView.as_view(), name='catatumbo-ficha-valida-documento'),
     path('forms/catatumbo/ficha/validar_nucleo/', CatatumboFichaValidaNucleoView.as_view(), name='catatumbo-ficha-valida-nucleo'),

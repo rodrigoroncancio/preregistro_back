@@ -954,4 +954,69 @@ class FormCatatumnoFichaAcuerdoNucleoFamiliar (models.Model):
     
     def __str__(self):
         return f"{self.nombre} - {self.numero_identificacion}"    
+ 
+class VArgelia2IndividualValidaciones (models.Model):
+    
+    identificacion = models.CharField(max_length=41, primary_key=True, db_column='IDENTIFICACION')
+    nombres = models.TextField(db_column='NOMBRES', null=True, blank=True)
+    apellidos = models.TextField(db_column='APELLIDOS', null=True, blank=True)
+    fecha_nacimiento = models.TextField(db_column='FECHA NACIMIENTO', null=True, blank=True)
+    id_validado = models.TextField(db_column='id_validado', null=True, blank=True)
+    id_validado_pre = models.TextField(db_column='id_validado_pre', null=True, blank=True)
+    validado_final_pre = models.TextField(db_column='validado_final_pre', null=True, blank=True)
+    completitud_pre = models.TextField(db_column='Completitud_pre', null=True, blank=True)
+    representante_pre = models.TextField(db_column='representante_pre', null=True, blank=True)
+    antecedentes_jefe_pre = models.TextField(db_column='Antecedentes_jefe_pre', null=True, blank=True)
+    etarea_pre = models.TextField(db_column='Etarea_pre', null=True, blank=True)
+    id_ficha = models.TextField(db_column='id_validacion_ficha', null=True, blank=True)
+    validado_final_ficha = models.TextField(db_column='validado_final_ficha', null=True, blank=True)
+    completitud_ficha = models.TextField(db_column='completitud_ficha', null=True, blank=True)
+    valida_datos_jefes_ficha = models.TextField(db_column='valida_datos_jefes_ficha', null=True, blank=True)
+    valida_nucleo_integrantes_ficha = models.TextField(db_column='valida_nucleo_integrantes_ficha', null=True, blank=True)
+    valida_antece_jefe_ficha = models.TextField(db_column='valida_antece_jefe_ficha', null=True, blank=True)
+    valida_antec_nucleo_ficha = models.TextField(db_column='valida_antec_nucleo_ficha', null=True, blank=True)
+    confirma_compos_familiar_ficha = models.TextField(db_column='confirma_compos_familiar_ficha', null=True, blank=True)
+    pertenece_comunidad_ficha = models.TextField(db_column='pertenece_comunidad_ficha', null=True, blank=True)
+    arraigo_nucleo_ficha = models.TextField(db_column='arraigo_nucleo_ficha', null=True, blank=True)
+    valida_funcionario_ficha = models.TextField(db_column='valida_funcionario_ficha', null=True, blank=True)
+    acredita_propiedad = models.TextField(db_column='acredita_propiedad', null=True, blank=True)
+    validacion_predio = models.TextField(db_column='validacion_predio', null=True, blank=True)
+    firma = models.TextField(db_column='firma', null=True, blank=True)
+    firma_file = models.TextField(db_column='firma_file', null=True, blank=True)
+
+    
+    class Meta:
+        db_table = '[report].[V_Argelia2_Individual_Validaciones]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
+        managed = False  # Evita que Django intente modificar la tabla
+       
+ 
+class VCatatumboIndividualValidaciones (models.Model):
+    
+    identificacion = models.CharField(max_length=41, primary_key=True, db_column='IDENTIFICACION')
+    nombres = models.TextField(db_column='NOMBRES', null=True, blank=True)
+    apellidos = models.TextField(db_column='APELLIDOS', null=True, blank=True)
+    fecha_nacimiento = models.TextField(db_column='FECHA NACIMIENTO', null=True, blank=True)
+    id_validado = models.TextField(db_column='id_validado', null=True, blank=True)
+    id_validado_pre = models.TextField(db_column='id_validado_pre', null=True, blank=True)
+    validado_final_pre = models.TextField(db_column='validado_final_pre', null=True, blank=True)
+    completitud_pre = models.TextField(db_column='Completitud_pre', null=True, blank=True)
+    datos_jefe_pre = models.TextField(db_column='Datos_jefe_pre', null=True, blank=True)
+    antecedentes_jefe_pre = models.TextField(db_column='Antecedentes_jefe_pre', null=True, blank=True)
+    ubicacion_nucleo_pre = models.TextField(db_column='Ubicacion_nucleo_pre', null=True, blank=True)
+    correspondencia_cultivo_pre = models.TextField(db_column='Correspondencia_cultivo_pre', null=True, blank=True)
+    area_disponible_pre = models.TextField(db_column='Area_disponible_pre', null=True, blank=True)
+    id_ficha = models.TextField(db_column='id_ficha', null=True, blank=True)
+    validado_final_ficha = models.TextField(db_column='validado_final_ficha', null=True, blank=True)
+    completitud_ficha = models.TextField(db_column='Completitud_ficha', null=True, blank=True)
+    valida_antecedentes_ficha = models.TextField(db_column='valida_antecedentes_ficha', null=True, blank=True)
+    composicion_familia_ficha = models.TextField(db_column='composicion_familia_ficha', null=True, blank=True)
+    pertenece_comunidad_ficha = models.TextField(db_column='pertenece_comunidad_ficha', null=True, blank=True)
+    valida_arraigo_ficha = models.TextField(db_column='valida_arraigo_ficha', null=True, blank=True)
+    acreditacion_propiedad = models.TextField(db_column='acreditacion_propiedad', null=True, blank=True)
+    validacion_predio = models.TextField(db_column='validacion_predio', null=True, blank=True)
+
+    
+    class Meta:
+        db_table = '[report].[V_Catatumbo_Individual_Validaciones]'  # Asegura que el modelo apunte a la tabla existente en SQL Server
+        managed = False  # Evita que Django intente modificar la tabla
     

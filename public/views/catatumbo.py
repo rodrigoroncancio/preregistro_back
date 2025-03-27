@@ -4,7 +4,7 @@ from rest_framework import status
 from core.models import PersonaPnis,  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
 from core.serializers.catatumbo import CatatumboIndividualSerializer
-from ..models import FormCatatumbosFichaAcuerdo,FormCatatumnoFichaAcuerdoNucleoFamiliar, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
+from ..models import VArgelia2IndividualValidaciones, VCatatumboIndividualValidaciones, FormCatatumbosFichaAcuerdo,FormCatatumnoFichaAcuerdoNucleoFamiliar, FormCatatumboPreregistro, FormCatatumboPreinscripcionDesplazados, FormCatatumboPreinscripcionGrupoProductores, FormCatatumboPreinscripcionNucleo, FormArgeliaFichaAcuerdo
 
 from ..serializers.catatumbo_preregistro import CatatumboPreregistroSerializer
 from ..serializers.catatumbo_preinscripcionnucleo import CatatumboPreincripcionNucleoSerializer
@@ -42,6 +42,34 @@ class CatatumboPreinscripcionDesplazdosView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ConsultarDocumentoView(APIView):
+    permission_classes = []
+    
+    def post(self, request):
+        # Obtener los parámetros del cuerpo de la solicitud
+        documento = request.data.get('numdocumento')
+        fecha_nacimiento = request.data.get('fechanacimiento')
+
+        # Verificar si ambos campos están presentes
+        if not documento or not fecha_nacimiento:
+            return Response({'detail': 'Los campos "numdocumento" y "fechanacimiento" son obligatorios.'}, 
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Buscar en la primera base de datos
+        resultado1 = VArgelia2IndividualValidaciones.objects.filter(identificacion=documento, fecha_nacimiento=fecha_nacimiento)
+        if resultado1.exists():
+            # Si hay resultados, devolver con status 1
+            return Response({'status': 1, 'data': resultado1.values()}, status=status.HTTP_200_OK)
+
+        # Buscar en la segunda base de datos
+        resultado2 = VCatatumboIndividualValidaciones.objects.filter(identificacion=documento, fecha_nacimiento=fecha_nacimiento)
+        if resultado2.exists():
+            # Si hay resultados, devolver con status 1
+            return Response({'status': 2, 'data': resultado2.values()}, status=status.HTTP_200_OK)
+
+        # Si no hay resultados en ambas bases de datos, devolver status 2
+        return Response({'status': 3, 'data': []}, status=status.HTTP_200_OK)
 
 class CatatumboValidaDocumentoView(APIView):
     def get(self, request):
