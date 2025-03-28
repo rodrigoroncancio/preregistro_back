@@ -356,7 +356,7 @@ class ArgeliaGrupos(models.Model):
         managed = False  # Evita que Django intente modificar la tabla
 
 class VArgeliaIndividual(models.Model):
-    id = models.CharField(max_length=41, primary_key=True, db_column='__id')
+    id = models.CharField(max_length=41, primary_key=True, db_column='id')
     submissiondate = models.TextField(db_column='SUBMISSIONDATE', null=True, blank=True)
     updatedat = models.TextField(db_column='UPDATEDAT', null=True, blank=True)
     submitterid = models.TextField(db_column='SUBMITTERID', null=True, blank=True)
