@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, status
+from rest_framework.authentication import SessionAuthentication
 from core.models import PersonaPnis,  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
 from core.serializers.catatumbo import CatatumboIndividualSerializer
@@ -44,6 +45,7 @@ class CatatumboPreinscripcionDesplazdosView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ConsultarDocumentoView(viewsets.GenericViewSet):
+    authentication_classes = [SessionAuthentication]
     permission_classes = []
     
     def consultar(self, request):
