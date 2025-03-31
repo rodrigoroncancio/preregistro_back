@@ -48,10 +48,10 @@ class ConsultarDocumentoView(viewsets.GenericViewSet):
     authentication_classes = [SessionAuthentication]
     permission_classes = []
     
-    def consultar(self, request):
+    def consultar(self, request, doc, fecha):
         # Obtener los parámetros del cuerpo de la solicitud
-        documento = request.data.get('numdocumento')
-        fecha_nacimiento = request.data.get('fechanacimiento')
+        documento = doc
+        fecha_nacimiento = fecha
 
         # Verificar si ambos campos están presentes
         if not documento or not fecha_nacimiento:
