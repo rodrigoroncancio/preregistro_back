@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets, status
 from core.models import PersonaPnis,  ArgeliaPersonas, ArgeliaPersonasValidadas, CatatumboPersonasValidadas, VCatatumboIndividuales
 from core.serializers.staff import ArgeliaPersonasSerializer
 from core.serializers.catatumbo import CatatumboIndividualSerializer
@@ -43,10 +43,10 @@ class CatatumboPreinscripcionDesplazdosView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ConsultarDocumentoView(APIView):
+class ConsultarDocumentoView(viewsets.GenericViewSet):
     permission_classes = []
     
-    def post(self, request):
+    def consultar(self, request):
         # Obtener los parámetros del cuerpo de la solicitud
         documento = request.data.get('numdocumento')
         fecha_nacimiento = request.data.get('fechanacimiento')
