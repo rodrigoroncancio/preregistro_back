@@ -136,6 +136,10 @@ class FichaAcuerdoFase2ViewSet (viewsets.ModelViewSet):
         'numero_identificacion'
     ]
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        return setContext(context, self.kwargs.get('formid'))
+    
 class FichaAcuerdoFase2NucleoViewSet (viewsets.ModelViewSet):
 
     permission_classes = [IsAdminUser]
