@@ -53,6 +53,31 @@ class CatatumboIndividualViewSet (viewsets.ModelViewSet):
         'apellidos',
         'fase'
     ]
+    
+    def get_queryset(self):
+        queryset = VCatatumboIndividuales.objects.all()
+        tipo = self.kwargs.get('tipo', None)  # Obtiene 'tipo', puede ser None
+
+        if tipo is not None:
+            try:
+                tipo = int(tipo)  # Convierte a entero si es posible
+                if tipo == 1:
+                    queryset = queryset.filter(condicion='Desplazado')  # Filtra correctamente
+                elif tipo == 2:
+                    queryset = queryset.exclude(condicion='Desplazado')    
+                elif tipo == 3:
+                    queryset = queryset.filter(tenencia='Propietario')  # Filtra por 'Propietario'
+                elif tipo == 4:
+                    queryset = queryset.exclude(tenencia='Propietario')  #
+                elif tipo == 5:
+                    queryset = queryset.filter(tenencia='Propietario').exclude(condicion='Desplazado') 
+                elif tipo == 6:
+                    queryset = queryset.filter(tipo_documento='Permiso_Especial_de_Permanencia PEP')       
+            except (ValueError, TypeError):
+                pass  # Si hay error en la conversión, no aplicar el filtro
+
+        return queryset
+    
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
