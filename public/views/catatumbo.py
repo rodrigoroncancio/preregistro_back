@@ -45,7 +45,7 @@ class CatatumboPreinscripcionDesplazdosView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ConsultarDocumentoView(viewsets.GenericViewSet):
-    authentication_classes = [SessionAuthentication]
+    # authentication_classes = [SessionAuthentication]
     permission_classes = []
     
     def consultar(self, request, doc, fecha):
