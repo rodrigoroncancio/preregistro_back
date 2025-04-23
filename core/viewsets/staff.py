@@ -211,6 +211,21 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         departments_list = Department.objects.all().values()
         return Response(list(departments_list))
 
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+    
+    
+    
+
 class MunicipalityViewSet(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = MunicipalitySerializer
@@ -226,6 +241,18 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
             municipalities_list = Municipality.objects.all().values()
 
         return Response(list(municipalities_list))
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class TownshipViewSet(viewsets.ModelViewSet):
     permission_classes = []
@@ -242,6 +269,18 @@ class TownshipViewSet(viewsets.ModelViewSet):
             townships_list = Township.objects.all().values()
 
         return Response(list(townships_list))
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class VillageViewSet(viewsets.ModelViewSet):
     permission_classes = []
@@ -256,6 +295,18 @@ class VillageViewSet(viewsets.ModelViewSet):
             villages_list = Village.objects.all().values()
 
         return Response(list(villages_list))
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class StaffViewSet (viewsets.ModelViewSet):
 

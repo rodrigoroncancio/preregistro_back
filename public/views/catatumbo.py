@@ -24,6 +24,15 @@ class CatatumboPreregistroView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 
 class CatatumboPreinscripcionNucleoView(APIView):
@@ -34,6 +43,15 @@ class CatatumboPreinscripcionNucleoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class CatatumboPreinscripcionDesplazdosView(APIView):
 
@@ -43,6 +61,15 @@ class CatatumboPreinscripcionDesplazdosView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class ConsultarDocumentoView(viewsets.GenericViewSet):
     # authentication_classes = [SessionAuthentication]
@@ -72,6 +99,18 @@ class ConsultarDocumentoView(viewsets.GenericViewSet):
 
         # Si no hay resultados en ambas bases de datos, devolver status 2
         return Response({'status': 3, 'data': []}, status=status.HTTP_200_OK)
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class CatatumboValidaDocumentoView(APIView):
     def get(self, request):
@@ -94,6 +133,54 @@ class CatatumboValidaDocumentoView(APIView):
             return Response(True, status=status.HTTP_200_OK)
 
         return Response(False, status=status.HTTP_200_OK)
+    
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+    
+class CatatumboFichaValidaDocumentoView(APIView):
+    permission_classes = []
+    def get(self, request):
+        documento = request.query_params.get('documento')
+        if not(PersonaPnis.objects.filter(identificacion=int(documento)).exists()):  
+            return Response(
+                {
+                    "status": 1,
+                    "data": {}
+                },
+                status=status.HTTP_200_OK
+            )   
+        else:
+            registro = PersonaPnis.objects.filter(identificacion=int(documento)).first()
+            serializer = UserPNISSerializer(registro)
+            return Response(
+                {
+                    "status": 1,
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+            
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+            
     
 class CatatumboFichaValidaDocumentoView(APIView):
     permission_classes = []
@@ -158,6 +245,18 @@ class CatatumboFichaValidaDocumentoView(APIView):
                 status=status.HTTP_200_OK
             )  
             
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+            
 class CatatumboFichaValidaNucleoView(APIView):
     permission_classes = []
     def get(self, request):
@@ -205,6 +304,17 @@ class CatatumboFichaValidaNucleoView(APIView):
                 },
                 status=status.HTTP_200_OK
             )  
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass        
             
 class CatatumboFichaAcuerdoNucleoView(APIView):
     permission_classes = []
@@ -216,7 +326,16 @@ class CatatumboFichaAcuerdoNucleoView(APIView):
             personas = serializer.save()
             return Response({"message": "Personas creadas correctamente", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass         
     
 class ArgeliaFichaValidaDocumentoView(APIView):
     permission_classes = []
@@ -272,7 +391,18 @@ class ArgeliaFichaValidaDocumentoView(APIView):
                 "data": {}
             },
             status=status.HTTP_200_OK)
-    
+            
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
     
 class ArgeliaFichaAcuerdoNucleoView(APIView):
     permission_classes = []
@@ -285,6 +415,16 @@ class ArgeliaFichaAcuerdoNucleoView(APIView):
             return Response({"message": "Personas creadas correctamente", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class CatatumboPreinscripcionGrupoProductoresView(APIView):
 
@@ -295,6 +435,15 @@ class CatatumboPreinscripcionGrupoProductoresView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+
 class CatatumboPreinscripcionNucleosIndividualesView(APIView):
 
     def post(self, request):
@@ -303,6 +452,16 @@ class CatatumboPreinscripcionNucleosIndividualesView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 
 class CatatumboPreinscripcionFamiliasPnisView(APIView):
 
@@ -312,6 +471,16 @@ class CatatumboPreinscripcionFamiliasPnisView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
     
 class ArgeliaFichaAcuerdoView(APIView):
     permission_classes = []
@@ -321,6 +490,15 @@ class ArgeliaFichaAcuerdoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
     
 class CatatumboFichaAcuerdoView(APIView):
     permission_classes = []
@@ -330,3 +508,12 @@ class CatatumboFichaAcuerdoView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
